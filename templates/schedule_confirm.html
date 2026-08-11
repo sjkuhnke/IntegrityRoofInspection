@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Inspection Scheduled | Integrity Roof Inspection
+{% endblock %}
+
+{% block content %}
+
+<section class="confirmation-page">
+
+  <div class="confirmation-card">
+
+    <h1>THANK YOU FOR SCHEDULING<br>YOUR FREE ROOF INSPECTION</h1>
+
+    <p class="confirmation-intro">
+      Your inspection has been scheduled for:
+    </p>
+
+    <div class="confirmation-date">
+      <span>{{ inspection_date }}</span>
+      <strong>AT</strong>
+      <span>{{ inspection_time }}</span>
+    </div>
+
+    <div class="booking-number">
+
+      <p>YOUR BOOKING CONFIRMATION NUMBER:</p>
+
+      <div class="booking-number-row">
+
+        <code id="booking-number">
+          {{ booking_number }}
+        </code>
+
+        <button
+          type="button"
+          class="copy-booking-button"
+          id="copy-booking">
+          COPY
+        </button>
+
+      </div>
+
+      <span
+        class="copy-message"
+        id="copy-message"
+        aria-live="polite">
+      </span>
+
+      <small>
+        Save this number if you need to reference your appointment later.
+      </small>
+
+    </div>
+
+    <a
+      href="{% url 'schedule' %}"
+      class="confirmation-edit">
+      EDIT OR CHANGE YOUR INSPECTION DATE/TIME
+    </a>
+
+  </div>
+
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const copyButton = document.getElementById("copy-booking");
+  const bookingNumber = document.getElementById("booking-number");
+  const copyMessage = document.getElementById("copy-message");
+
+  copyButton.addEventListener("click", async () => {
+
+    try {
+
+      await navigator.clipboard.writeText(
+        bookingNumber.textContent.trim()
+      );
+
+      copyButton.textContent = "COPIED";
+
+      copyMessage.textContent =
+        "Booking number copied to clipboard.";
+
+      setTimeout(() => {
+        copyButton.textContent = "COPY";
+        copyMessage.textContent = "";
+      }, 2500);
+
+    } catch (error) {
+
+      copyMessage.textContent =
+        "Unable to copy automatically. Please copy the number manually.";
+
+    }
+
+  });
+
+});
+</script>
+
+{% endblock %}

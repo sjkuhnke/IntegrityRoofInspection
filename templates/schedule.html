@@ -1,0 +1,511 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Schedule Your Free Inspection | Integrity Roof Inspection
+{% endblock %}
+
+{% block meta_description %}
+  Schedule your free roof inspection with Integrity Roof Inspection.
+{% endblock %}
+
+{% block content %}
+
+<section class="schedule-page">
+
+  <!-- PAGE INTRO -->
+  <div class="schedule-heading">
+    <h1>SELECT AN AVAILABLE<br>DATE AND TIME</h1>
+    <p>
+      Choose an available inspection appointment below.
+      You can view the full month or focus on one week at a time.
+    </p>
+  </div>
+    
+  <!-- SELECTION -->
+  <section class="schedule-selection">
+
+    <h2>YOUR SELECTED DATE &amp; TIME:</h2>
+
+    <form
+      method="post"
+      action="{% url 'schedule_confirmation' %}"
+      id="schedule-form">
+
+      {% csrf_token %}
+
+      <div class="schedule-select-row">
+
+        <label>
+          <span class="sr-only">Date</span>
+
+          <select name="date" id="date-select" required>
+            <option value="">SELECT DATE</option>
+          </select>
+        </label>
+
+        <span class="selection-at">AT</span>
+
+        <label>
+          <span class="sr-only">Time</span>
+
+          <select name="time" id="time-select" required disabled>
+            <option value="">SELECT TIME</option>
+          </select>
+        </label>
+
+      </div>
+
+      <p class="selection-message" id="selection-message">
+        Select an available time below.
+      </p>
+
+      <label class="confirmation-check">
+        <input type="checkbox" required>
+        <span>
+          I have confirmed the date and time are correct,
+          and all homeowners will be present.
+        </span>
+      </label>
+
+      <button
+        type="submit"
+        class="btn btn-primary schedule-submit"
+        id="schedule-submit"
+        disabled>
+        SUBMIT
+      </button>
+
+    </form>
+
+  </section>
+
+  <!-- CALENDAR -->
+  <section class="schedule-calendar-section">
+
+    <div class="calendar-toolbar">
+      <button
+        type="button"
+        class="calendar-nav-button"
+        id="previous-month"
+        aria-label="Previous month">
+        &#9664;
+      </button>
+
+      <div class="calendar-month">
+        <h2 id="calendar-month-label"></h2>
+      </div>
+
+      <button
+        type="button"
+        class="calendar-nav-button"
+        id="next-month"
+        aria-label="Next month">
+        &#9654;
+      </button>
+    </div>
+
+    <div class="calendar-view-controls">
+      <button type="button" class="calendar-view-button active" data-view="month">
+        MONTH VIEW
+      </button>
+
+      <button type="button" class="calendar-view-button" data-view="week">
+        WEEK VIEW
+      </button>
+    </div>
+
+    <div class="calendar-legend">
+      <span>
+        <i class="legend-dot legend-available"></i>
+        AVAILABLE
+      </span>
+
+      <span>
+        <i class="legend-dot legend-unavailable"></i>
+        UNAVAILABLE
+      </span>
+
+      <span>
+        <i class="legend-dot legend-selected"></i>
+        SELECTED
+      </span>
+    </div>
+
+    <div id="calendar" class="calendar"></div>
+
+  </section>
+
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  window.SCHEDULE_CONFIG = {
+    initialDate: "2026-09-08"
+  };
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const calendar = document.getElementById("calendar");
+  const monthLabel = document.getElementById("calendar-month-label");
+
+  const previousButton = document.getElementById("previous-month");
+  const nextButton = document.getElementById("next-month");
+
+  const dateSelect = document.getElementById("date-select");
+  const timeSelect = document.getElementById("time-select");
+
+  const submitButton = document.getElementById("schedule-submit");
+  const selectionMessage = document.getElementById("selection-message");
+
+  let currentDate = new Date(window.SCHEDULE_CONFIG.initialDate + "T12:00:00");
+  let selectedDate = null;
+  let selectedTime = null;
+  let currentView = "month";
+
+  const timeSlots = [
+    "10:00 AM",
+    "12:00 PM",
+    "2:00 PM",
+    "4:00 PM",
+    "6:00 PM",
+    "8:00 PM"
+  ];
+
+  /*
+   * MOCK AVAILABILITY
+   *
+   * This is deliberately front-end data for now.
+   * Later this can be replaced by availability returned from Django.
+   */
+  function isAvailable(date, time) {
+
+    const day = date.getDay();
+
+    // Sundays and Saturdays have fewer appointments.
+    if (day === 0 || day === 6) {
+      return time === "4:00 PM" || time === "6:00 PM";
+    }
+
+    // Random-looking but deterministic demo availability.
+    const dateNumber = date.getDate();
+
+    if (dateNumber % 7 === 0) {
+      return time === "10:00 AM" ||
+             time === "2:00 PM" ||
+             time === "4:00 PM";
+    }
+
+    if (dateNumber % 5 === 0) {
+      return time === "12:00 PM" ||
+             time === "2:00 PM" ||
+             time === "6:00 PM";
+    }
+
+    return time !== "8:00 PM";
+  }
+
+  function formatDate(date) {
+    return date.toISOString().split("T")[0];
+  }
+
+  function displayDate(date) {
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    });
+  }
+
+  function renderCalendar() {
+
+    calendar.innerHTML = "";
+
+    if (currentView === "week") {
+      renderWeekView();
+    } else {
+      renderMonthView();
+    }
+
+    monthLabel.textContent = currentDate.toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric"
+    });
+  }
+
+  function createDay(day) {
+
+    const dayElement = document.createElement("div");
+    dayElement.className = "calendar-day";
+
+    const dayHeader = document.createElement("div");
+    dayHeader.className = "calendar-day-header";
+
+    dayHeader.textContent = day.toLocaleDateString("en-US", {
+      weekday: "short"
+    });
+
+    const dateNumber = document.createElement("strong");
+    dateNumber.textContent = day.getDate();
+
+    dayHeader.appendChild(dateNumber);
+    dayElement.appendChild(dayHeader);
+
+    timeSlots.forEach(time => {
+
+      const slot = document.createElement("button");
+      slot.type = "button";
+      slot.className = "calendar-slot";
+
+      const available = isAvailable(day, time);
+
+      slot.textContent = available
+        ? `${time}  •  Click to Schedule`
+        : `${time}  •  Unavailable`;
+
+      if (!available) {
+        slot.classList.add("unavailable");
+        slot.disabled = true;
+        dayElement.appendChild(slot);
+        return;
+      }
+
+      slot.classList.add("available");
+
+      if (
+        selectedDate &&
+        formatDate(selectedDate) === formatDate(day) &&
+        selectedTime === time
+      ) {
+        slot.classList.add("selected");
+      }
+
+      slot.addEventListener("click", () => {
+        selectAppointment(day, time);
+      });
+
+      dayElement.appendChild(slot);
+    });
+
+    return dayElement;
+  }
+
+  function renderMonthView() {
+
+    calendar.className = "calendar calendar-month-view";
+
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    const startingDay = firstDay.getDay();
+
+    const grid = document.createElement("div");
+    grid.className = "calendar-grid";
+
+    [
+      "SUN",
+      "MON",
+      "TUE",
+      "WED",
+      "THU",
+      "FRI",
+      "SAT"
+    ].forEach(day => {
+
+      const heading = document.createElement("div");
+      heading.className = "calendar-weekday";
+      heading.textContent = day;
+
+      grid.appendChild(heading);
+    });
+
+    // Previous month's filler days.
+    for (let i = 0; i < startingDay; i++) {
+
+      const filler = document.createElement("div");
+      filler.className = "calendar-day calendar-day--filler";
+
+      grid.appendChild(filler);
+    }
+
+    for (let dayNumber = 1; dayNumber <= lastDay.getDate(); dayNumber++) {
+
+      const day = new Date(year, month, dayNumber);
+
+      grid.appendChild(createDay(day));
+    }
+
+    calendar.appendChild(grid);
+  }
+
+  function renderWeekView() {
+
+    calendar.className = "calendar calendar-week-view";
+
+    const weekStart = new Date(currentDate);
+
+    weekStart.setDate(
+      currentDate.getDate() - currentDate.getDay()
+    );
+
+    const grid = document.createElement("div");
+    grid.className = "calendar-week-grid";
+
+    for (let i = 0; i < 7; i++) {
+
+      const day = new Date(weekStart);
+
+      day.setDate(weekStart.getDate() + i);
+
+      grid.appendChild(createDay(day));
+    }
+
+    calendar.appendChild(grid);
+  }
+
+  function selectAppointment(date, time) {
+
+    selectedDate = new Date(date);
+    selectedTime = time;
+
+    updateDateDropdown();
+    updateTimeDropdown();
+
+    selectionMessage.textContent =
+      `${displayDate(date)} at ${time}`;
+
+    selectionMessage.classList.add("has-selection");
+
+    submitButton.disabled = false;
+
+    renderCalendar();
+  }
+
+  function updateDateDropdown() {
+
+    dateSelect.innerHTML = "";
+
+    const selectedOption = document.createElement("option");
+
+    selectedOption.value = formatDate(selectedDate);
+    selectedOption.textContent = displayDate(selectedDate);
+    selectedOption.selected = true;
+
+    dateSelect.appendChild(selectedOption);
+  }
+
+  function updateTimeDropdown() {
+
+    timeSelect.disabled = false;
+    timeSelect.innerHTML = "";
+
+    timeSlots.forEach(time => {
+
+      if (!isAvailable(selectedDate, time)) {
+        return;
+      }
+
+      const option = document.createElement("option");
+
+      option.value = time;
+      option.textContent = time;
+
+      if (time === selectedTime) {
+        option.selected = true;
+      }
+
+      timeSelect.appendChild(option);
+    });
+  }
+
+  dateSelect.addEventListener("change", () => {
+
+    if (!dateSelect.value) {
+      return;
+    }
+
+    selectedDate = new Date(dateSelect.value + "T12:00:00");
+
+    selectedTime = null;
+
+    updateTimeDropdown();
+
+    const firstAvailable = timeSlots.find(time =>
+      isAvailable(selectedDate, time)
+    );
+
+    if (firstAvailable) {
+      selectedTime = firstAvailable;
+      timeSelect.value = firstAvailable;
+    }
+
+    selectionMessage.textContent =
+      `${displayDate(selectedDate)} at ${selectedTime}`;
+
+    submitButton.disabled = !selectedTime;
+
+    renderCalendar();
+  });
+
+  timeSelect.addEventListener("change", () => {
+
+    selectedTime = timeSelect.value;
+
+    selectionMessage.textContent =
+      `${displayDate(selectedDate)} at ${selectedTime}`;
+
+    submitButton.disabled = !selectedTime;
+
+    renderCalendar();
+  });
+
+  previousButton.addEventListener("click", () => {
+
+    if (currentView === "week") {
+      currentDate.setDate(currentDate.getDate() - 7);
+    } else {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+    }
+
+    renderCalendar();
+  });
+
+  nextButton.addEventListener("click", () => {
+
+    if (currentView === "week") {
+      currentDate.setDate(currentDate.getDate() + 7);
+    } else {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+    }
+
+    renderCalendar();
+  });
+
+  document.querySelectorAll(".calendar-view-button")
+    .forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        document.querySelectorAll(".calendar-view-button")
+          .forEach(button => button.classList.remove("active"));
+
+        button.classList.add("active");
+
+        currentView = button.dataset.view;
+
+        renderCalendar();
+      });
+
+    });
+
+  renderCalendar();
+
+});
+</script>
+{% endblock %}

@@ -7,11 +7,8 @@
   <title>{% block title %}Integrity Roof Inspection | Roof Maintenance & Inspections{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}Rated #1 for roof relamination in Wisconsin. Free roof inspections that can extend your roof's life 10-15+ years and save you thousands over a full replacement.{% endblock %}">
 
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/favicon-32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicons/favicon-16.png' %}">
-  <link rel="icon" type="image/png" sizes="192x192" href="{% static 'favicons/favicon-192.png' %}">
-  <link rel="icon" type="image/png" sizes="512x512" href="{% static 'favicons/favicon-512.png' %}">
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicons/favicon-180.png' %}">
+  <link rel="icon" href="{% static 'favicons/favicon.ico' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicons/favicon.ico' %}">
   <link rel="shortcut icon" href="{% static 'favicons/favicon.ico' %}">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,18 +31,18 @@
       </a>
 
       <nav class="main-nav" aria-label="Primary">
-        <a href="#schedule">SCHEDULE INSPECTION</a>
+        <a href="{% url 'home' %}#schedule">SCHEDULE INSPECTION</a>
         <span aria-hidden="true">|</span>
-        <a href="#about">ABOUT US</a>
+        <a href="{% url 'home' %}#about">ABOUT US</a>
         <span aria-hidden="true">|</span>
-        <a href="#information">INFORMATION</a>
+        <a href="{% url 'home' %}#information">INFORMATION</a>
       </nav>
     </div>
 
     <nav id="mobile-nav" class="mobile-nav" aria-label="Primary mobile">
-      <a href="#schedule">Schedule Inspection</a>
-      <a href="#about">About Us</a>
-      <a href="#information">Information</a>
+      <a href="{% url 'home' %}#schedule">SCHEDULE INSPECTION</a>
+      <a href="{% url 'home' %}#about">ABOUT US</a>
+      <a href="{% url 'home' %}#information">INFORMATION</a>
     </nav>
   </header>
 
@@ -67,8 +64,6 @@
     </div>
 
     <div class="site-footer-legal">
-      <a href="{% url 'terms' %}">Terms &amp; Support</a>
-      <a href="{% url 'privacy' %}">Privacy Policy</a>
       <span>&copy; {% now "Y" %} Integrity Roof Inspection</span>
     </div>
   </footer>

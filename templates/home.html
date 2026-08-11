@@ -11,12 +11,11 @@
       <h1 class="hero-headline">CONSIDERING A ROOF<br>REPLACEMENT?</h1>
       <p class="hero-subhead">SEE IF YOUR ROOF QUALIFIES</p>
 
-      <form class="hero-cta-form" action="{% url 'schedule' %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary">
+      <div class="hero-cta-form">
+        <a href="{% url 'schedule' %}" class="btn btn-primary">
           SCHEDULE <span>YOUR FREE INSPECTION</span>
-        </button>
-      </form>
+        </a>
+      </div>
 
       <p class="hero-stat">HOMEOWNERS SAVE ON AVERAGE 75% ON THEIR ROOFING PROJECT</p>
     </div>
