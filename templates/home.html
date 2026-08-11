@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+  <!-- HERO -->
+  <section class="hero" id="schedule">
+    <div class="hero-bg" style="background-image:url('{% static "img/hero-roofer.jpg" %}');"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-headline">CONSIDERING A ROOF<br>REPLACEMENT?</h1>
+      <p class="hero-subhead">SEE IF YOUR ROOF QUALIFIES</p>
+
+      <form class="hero-cta-form" action="{% url 'schedule' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">
+          SCHEDULE <span>YOUR FREE INSPECTION</span>
+        </button>
+      </form>
+
+      <p class="hero-stat">HOMEOWNERS SAVE ON AVERAGE 75% ON THEIR ROOFING PROJECT</p>
+    </div>
+  </section>
+
+  <!-- LONGEVITY / TRUST STRIP -->
+  <section class="trust-strip reveal">
+    <p class="trust-strip-headline">ENSURE THE LONGEVITY OF YOUR ROOF 10-15+ YEARS</p>
+    <hr class="rule">
+    {% include "partials/star_rating.html" %}
+    <hr class="rule">
+  </section>
+
+  <!-- ABOUT US -->
+  <section class="about" id="about">
+    <div class="photo-row reveal">
+      <img src="{% static 'img/about-house.jpg' %}" alt="Client home exterior inspected by Integrity Roof Inspection">
+      <img src="{% static 'img/about-shingle-lift.jpg' %}" alt="Technician lifting a shingle edge to check for damage">
+      <img src="{% static 'img/about-vent-seal.jpg' %}" alt="Technician resealing a roof vent">
+      <img src="{% static 'img/about-gutter-check.jpg' %}" alt="Technician inspecting a gutter corner">
+    </div>
+
+    <div class="about-body reveal">
+      <h2 class="section-title">ABOUT US</h2>
+      <p>At Integrity Roof Inspections, we believe homeowners deserve honest information, practical solutions, and the opportunity to get the most out of one of the biggest investments they'll ever make&mdash;their roof.</p>
+      <p>For many homeowners, the only solution they're presented with is a complete roof replacement costing tens of thousands of dollars. While full replacements are necessary in some situations, many roofs still have years of life left when properly maintained. Unfortunately, most roofing companies don't offer roof extension/maintenance services because their business model is built around full roof replacements. Large overhead, sales teams, and operating expenses make replacement projects significantly more profitable.</p>
+      <p class="about-pullquote">THAT'S WHERE WE'RE DIFFERENT.</p>
+      <p>Our founders spent years working for some of the largest roofing companies in Southeast Wisconsin. During that time, they saw countless homeowners encouraged to replace roofs that could have been safely maintained or repaired, leaving homeowners unaware of more affordable options.</p>
+    </div>
+  </section>
+
+  <!-- INFORMATION -->
+  <section class="information" id="information">
+    <div class="photo-row reveal">
+      <img src="{% static 'img/info-decking.jpg' %}" alt="Exposed roof decking showing wear">
+      <img src="{% static 'img/info-level-tool.jpg' %}" alt="Roof slope measuring tool on shingles">
+      <img src="{% static 'img/info-shingle-repair.jpg' %}" alt="Technician repairing a lifted shingle edge">
+      <img src="{% static 'img/info-nail-pop.jpg' %}" alt="Close-up of a popped roofing nail">
+    </div>
+
+    <div class="information-body reveal">
+      <h2 class="section-title">INFORMATION</h2>
+      <h3 class="section-subtitle">SAVE THOUSANDS ON YOUR ROOFING PROJECT</h3>
+      <p>At Integrity Roof Inspections, we believe every homeowner deserves to understand all of their options. While some roofs truly require replacement, many can continue to provide reliable protection when properly maintained. Our goal is to help you make the decision that best fits your home's condition, your budget, and your future plans&mdash;not simply recommend the most expensive solution.</p>
+    </div>
+
+    <div class="photo-row photo-row--captioned reveal">
+      <figure>
+        <img src="{% static 'img/info-door-flashing.jpg' %}" alt="Flashing along a roof-to-siding transition">
+        <figcaption>Roof maintenance is an affordable solution that repairs and protects your roof, enhancing its lifespan without the high costs of a full replacement. Schedule a free inspection to see if your roof qualifies!</figcaption>
+      </figure>
+      <figure>
+        <img src="{% static 'img/info-ridge-cap.jpg' %}" alt="Technician inspecting a ridge cap shingle">
+        <figcaption>Our expert technicians provide thorough roof inspections and maintenance solutions to extend your roof's lifespan by 10-15+ years, ensuring durability and saving you money on costly replacements.</figcaption>
+      </figure>
+      <figure>
+        <img src="{% static 'img/info-vent-cover.jpg' %}" alt="Roof vent cover on a shingle roof">
+        <figcaption>Regular roof maintenance can significantly enhance your home's durability and performance, preventing costly repairs and extending the life of your roof. A well-maintained roof ensures peace of mind and protects your investment.</figcaption>
+      </figure>
+    </div>
+
+    <p class="tagline reveal">BECAUSE INTEGRITY ISN'T JUST OUR NAME&mdash;IT'S HOW WE DO BUSINESS.</p>
+  </section>
+
+  <!-- WHO BENEFITS -->
+  <section class="benefits reveal">
+    <h2 class="section-title">WHO BENEFITS MOST FROM ROOF<br>MAINTENANCE SERVICES?</h2>
+    <p class="benefits-intro">Our services are especially beneficial for:</p>
+
+    <ul class="benefits-list">
+      <li>
+        <strong>New homeowners.</strong> If you want to protect one of your largest investments from day one by addressing small issues before they become expensive problems.
+      </li>
+      <li>
+        <strong>Homeowners who don't plan on living in their home for the next 15 years.</strong> If you're planning to move before your roof reaches the end of its service life, investing in preventative maintenance can often be a more practical and cost-effective solution than paying for a full roof replacement.
+      </li>
+      <li>
+        <strong>Homeowners preparing to sell their home.</strong> A professionally maintained roof can give buyers greater confidence and become a valuable selling point. Our maintenance services help demonstrate that the roof has been properly cared for, making your home more attractive to prospective buyers.
+      </li>
+      <li>
+        <strong>Homeowners who have financial limitations.</strong> Homeowners who aren't in a financial position to spend tens of thousands of dollars on a new roof. When a roof is still structurally suitable for maintenance, our services can extend its usable lifespan and help delay the need for a costly replacement, allowing homeowners more time to plan financially.
+      </li>
+    </ul>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials reveal">
+    <h2 class="section-title">WHAT YOUR NEIGHBORS ARE SAYING</h2>
+
+    <div class="testimonials-list">
+      <blockquote class="testimonial">
+        <span class="testimonial-avatar testimonial-avatar-pink">V</span>
+        <p>&ldquo;Tarek was very polite and informative on what we all needed and wanted. Very easy process and knowledgeable on what they are talking about. I would highly recommend working with them&rdquo;</p>
+      </blockquote>
+      <blockquote class="testimonial">
+        <span class="testimonial-avatar testimonial-avatar-teal">L</span>
+        <p>&ldquo;Tarek was very professional and honest. He did a thorough inspection of our roof. Highly impressed&rdquo;</p>
+      </blockquote>
+      <blockquote class="testimonial">
+        <span class="testimonial-avatar testimonial-avatar-green">T</span>
+        <p>&ldquo;Tarek did a fabulous job explaining everything!&rdquo;</p>
+      </blockquote>
+    </div>
+
+    <hr class="rule">
+    {% include "partials/star_rating.html" %}
+    <hr class="rule">
+  </section>
+
+  <!-- SIGNS YOUR ROOF NEEDS CARE -->
+  <section class="signs reveal">
+    <div class="signs-body">
+      <h2 class="section-title signs-title">
+        <span>SIGNS YOUR</span> <span>ROOF</span> <span>NEEDS</span> <span>CARE</span>
+      </h2>
+      <p>Homeowners should get roof inspections every 10 years to ensure their investment is protected correctly. Be vigilant for signs of roof damage, such as missing shingles, water stains, and de-lamination. Regular inspections can help identify issues early and extend your roof's lifespan.</p>
+    </div>
+    <div class="signs-image">
+      <img src="{% static 'img/signs-rooftop-view.jpg' %}" alt="View along a roof ridge overlooking a property, technician's gloved hand in foreground">
+    </div>
+  </section>
+
+{% endblock %}
