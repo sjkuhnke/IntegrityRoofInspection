@@ -12,128 +12,174 @@
 
 <section class="schedule-page">
 
-  <!-- PAGE INTRO -->
-  <div class="schedule-heading">
-    <h1>SELECT AN AVAILABLE<br>DATE AND TIME</h1>
-    <p>
-      Choose an available inspection appointment below.
-      You can view the full month or focus on one week at a time.
-    </p>
-  </div>
-    
-  <!-- SELECTION -->
-  <section class="schedule-selection">
+  <div class="schedule-picker">
 
-    <h2>YOUR SELECTED DATE &amp; TIME:</h2>
-
-    <form
-      method="post"
-      action="{% url 'schedule_confirmation' %}"
-      id="schedule-form">
-
-      {% csrf_token %}
-
-      <div class="schedule-select-row">
-
-        <label>
-          <span class="sr-only">Date</span>
-
-          <select name="date" id="date-select" required>
-            <option value="">SELECT DATE</option>
-          </select>
-        </label>
-
-        <span class="selection-at">AT</span>
-
-        <label>
-          <span class="sr-only">Time</span>
-
-          <select name="time" id="time-select" required disabled>
-            <option value="">SELECT TIME</option>
-          </select>
-        </label>
-
-      </div>
-
-      <p class="selection-message" id="selection-message">
-        Select an available time below.
+    <!-- PAGE HEADING -->
+    <div class="schedule-heading">
+      <h1>SELECT AN AVAILABLE<br>DATE AND TIME</h1>
+      <p>
+        Choose an available inspection appointment below.
+        You can use the calendar or select a date and time from the menus.
       </p>
+    </div>
 
-      <label class="confirmation-check">
-        <input type="checkbox" required>
-        <span>
-          I have confirmed the date and time are correct,
-          and all homeowners will be present.
-        </span>
-      </label>
+    {% if error_message %}
+      <div class="schedule-error-banner" role="alert">
+        {{ error_message }}
+      </div>
+    {% endif %}
+    
+    <!-- SELECTION -->
+    <section class="schedule-selection">
 
-      <button
-        type="submit"
-        class="btn btn-primary schedule-submit"
-        id="schedule-submit"
-        disabled>
-        SUBMIT
-      </button>
+      <h2>YOUR SELECTED DATE &amp; TIME:</h2>
 
-    </form>
+      <form
+        method="post"
+        action="{% url 'schedule_confirmation' %}"
+        id="schedule-form">
 
-  </section>
+        {% csrf_token %}
 
-  <!-- CALENDAR -->
-  <section class="schedule-calendar-section">
+        <div class="schedule-select-row">
 
-    <div class="calendar-toolbar">
-      <button
-        type="button"
-        class="calendar-nav-button"
-        id="previous-month"
-        aria-label="Previous month">
-        &#9664;
-      </button>
+          <label>
+            <span class="sr-only">Date</span>
 
-      <div class="calendar-month">
-        <h2 id="calendar-month-label"></h2>
+            <select name="date" id="date-select" required>
+              <option value="">SELECT DATE</option>
+            </select>
+          </label>
+
+          <span class="selection-at">AT</span>
+
+          <label>
+            <span class="sr-only">Time</span>
+
+            <select name="time" id="time-select" required disabled>
+              <option value="">SELECT TIME</option>
+            </select>
+          </label>
+
+        </div>
+
+
+        <p class="selection-message" id="selection-message">
+          Select an available date and time.
+        </p>
+
+
+        <label class="confirmation-check">
+
+          <input
+            type="checkbox"
+            name="confirmed"
+            required>
+
+          <span>
+            I have confirmed the date and time are correct,
+            and all homeowners will be present.
+          </span>
+
+        </label>
+
+
+        <button
+          type="submit"
+          class="btn btn-primary schedule-submit"
+          id="schedule-submit"
+          disabled>
+          SUBMIT
+        </button>
+
+      </form>
+
+    </section>
+
+    <!-- CALENDAR -->
+    <div class="schedule-calendar-section">
+
+      <div class="calendar-toolbar">
+
+        <button
+          type="button"
+          class="calendar-nav-button"
+          id="previous-month"
+          aria-label="Previous month">
+          &#9664;
+        </button>
+
+        <div class="calendar-month">
+          <h2 id="calendar-month-label"></h2>
+        </div>
+
+        <button
+          type="button"
+          class="calendar-nav-button"
+          id="next-month"
+          aria-label="Next month">
+          &#9654;
+        </button>
+
       </div>
 
+
+      <div class="calendar-view-controls">
+
+        <button
+          type="button"
+          class="calendar-view-button active"
+          data-view="month">
+          MONTH VIEW
+        </button>
+
+        <button
+          type="button"
+          class="calendar-view-button"
+          data-view="week">
+          WEEK VIEW
+        </button>
+
+      </div>
+
+
+      <div class="calendar-legend">
+
+        <span>
+          <i class="legend-dot legend-available"></i>
+          AVAILABLE
+        </span>
+
+        <span>
+          <i class="legend-dot legend-unavailable"></i>
+          UNAVAILABLE
+        </span>
+
+        <span>
+          <i class="legend-dot legend-selected"></i>
+          SELECTED
+        </span>
+
+      </div>
+      
+      <!-- MOBILE CALENDAR TOGGLE -->
       <button
         type="button"
-        class="calendar-nav-button"
-        id="next-month"
-        aria-label="Next month">
-        &#9654;
-      </button>
-    </div>
+        class="calendar-toggle-button"
+        id="calendar-toggle"
+        aria-expanded="false"
+        aria-controls="calendar-wrapper">
 
-    <div class="calendar-view-controls">
-      <button type="button" class="calendar-view-button active" data-view="month">
-        MONTH VIEW
+        SHOW CALENDAR
+
       </button>
 
-      <button type="button" class="calendar-view-button" data-view="week">
-        WEEK VIEW
-      </button>
+      <div id="calendar-wrapper" class="calendar-wrapper">
+        <div id="calendar" class="calendar" aria-busy="false"></div>
+      </div>
     </div>
 
-    <div class="calendar-legend">
-      <span>
-        <i class="legend-dot legend-available"></i>
-        AVAILABLE
-      </span>
-
-      <span>
-        <i class="legend-dot legend-unavailable"></i>
-        UNAVAILABLE
-      </span>
-
-      <span>
-        <i class="legend-dot legend-selected"></i>
-        SELECTED
-      </span>
-    </div>
-
-    <div id="calendar" class="calendar"></div>
-
-  </section>
+  </div>
 
 </section>
 
@@ -142,7 +188,9 @@
 {% block extra_scripts %}
 <script>
   window.SCHEDULE_CONFIG = {
-    initialDate: "2026-09-08"
+    initialDate: "{% now 'Y-m-d' %}",
+    availabilityUrl: "{% url 'schedule_availability' %}",
+    timeSlots: {{ time_slots|safe|default:"[]" }}
   };
 </script>
 
@@ -160,56 +208,73 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const submitButton = document.getElementById("schedule-submit");
   const selectionMessage = document.getElementById("selection-message");
+  
+  const calendarToggle = document.getElementById("calendar-toggle");
+  const calendarWrapper = document.getElementById("calendar-wrapper");
 
   let currentDate = new Date(window.SCHEDULE_CONFIG.initialDate + "T12:00:00");
   let selectedDate = null;
   let selectedTime = null;
   let currentView = "month";
 
-  const timeSlots = [
-    "10:00 AM",
-    "12:00 PM",
-    "2:00 PM",
-    "4:00 PM",
-    "6:00 PM",
-    "8:00 PM"
-  ];
+  const timeSlots = window.SCHEDULE_CONFIG.timeSlots;
 
   /*
-   * MOCK AVAILABILITY
+   * AVAILABILITY
    *
-   * This is deliberately front-end data for now.
-   * Later this can be replaced by availability returned from Django.
+   * Real availability now lives server-side (see availability.py +
+   * the /schedule/availability/ endpoint), so this is the single
+   * source of truth the calendar and the final booking submission
+   * both agree on. We cache per-month responses to avoid refetching
+   * the same month repeatedly while paging around.
    */
-  function isAvailable(date, time) {
+  const availabilityCache = {};
 
-    const day = date.getDay();
+  function monthKey(year, monthIndexZeroBased) {
+    return `${year}-${String(monthIndexZeroBased + 1).padStart(2, "0")}`;
+  }
 
-    // Sundays and Saturdays have fewer appointments.
-    if (day === 0 || day === 6) {
-      return time === "4:00 PM" || time === "6:00 PM";
+  async function fetchMonthAvailability(year, monthIndexZeroBased) {
+    const key = monthKey(year, monthIndexZeroBased);
+
+    if (availabilityCache[key]) {
+      return availabilityCache[key];
     }
 
-    // Random-looking but deterministic demo availability.
-    const dateNumber = date.getDate();
+    const response = await fetch(
+      `${window.SCHEDULE_CONFIG.availabilityUrl}?month=${key}`
+    );
 
-    if (dateNumber % 7 === 0) {
-      return time === "10:00 AM" ||
-             time === "2:00 PM" ||
-             time === "4:00 PM";
-    }
+    const data = await response.json();
 
-    if (dateNumber % 5 === 0) {
-      return time === "12:00 PM" ||
-             time === "2:00 PM" ||
-             time === "6:00 PM";
-    }
+    availabilityCache[key] = data.available || {};
 
-    return time !== "8:00 PM";
+    return availabilityCache[key];
+  }
+
+  // Merge the availability of every month touched by `dates` into one
+  // { "YYYY-MM-DD": ["10:00 AM", ...] } lookup.
+  async function collectAvailability(dates) {
+
+    const months = new Set(
+      dates.map(d => monthKey(d.getFullYear(), d.getMonth()))
+    );
+
+    const entries = await Promise.all(
+      [...months].map(async key => {
+        const [year, month] = key.split("-").map(Number);
+        return fetchMonthAvailability(year, month - 1);
+      })
+    );
+
+    return Object.assign({}, ...entries);
   }
 
   function formatDate(date) {
-    return date.toISOString().split("T")[0];
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   }
 
   function displayDate(date) {
@@ -220,23 +285,63 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function renderCalendar() {
+  function isAvailable(date, time, availabilityMap) {
+    const times = availabilityMap[formatDate(date)] || [];
+    return times.includes(time);
+  }
+
+  async function renderCalendar() {
+
+    calendar.setAttribute("aria-busy", "true");
+
+    const days = currentView === "week"
+      ? weekDays(currentDate)
+      : monthDays(currentDate);
+
+    const availabilityMap = await collectAvailability(days);
 
     calendar.innerHTML = "";
 
     if (currentView === "week") {
-      renderWeekView();
+      renderWeekView(days, availabilityMap);
     } else {
-      renderMonthView();
+      renderMonthView(days, availabilityMap);
     }
 
     monthLabel.textContent = currentDate.toLocaleDateString("en-US", {
       month: "long",
       year: "numeric"
     });
+
+    calendar.setAttribute("aria-busy", "false");
   }
 
-  function createDay(day) {
+  function monthDays(reference) {
+    const year = reference.getFullYear();
+    const month = reference.getMonth();
+    const lastDay = new Date(year, month + 1, 0);
+
+    const days = [];
+    for (let dayNumber = 1; dayNumber <= lastDay.getDate(); dayNumber++) {
+      days.push(new Date(year, month, dayNumber));
+    }
+    return days;
+  }
+
+  function weekDays(reference) {
+    const weekStart = new Date(reference);
+    weekStart.setDate(reference.getDate() - reference.getDay());
+
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(weekStart);
+      day.setDate(weekStart.getDate() + i);
+      days.push(day);
+    }
+    return days;
+  }
+
+  function createDay(day, availabilityMap) {
 
     const dayElement = document.createElement("div");
     dayElement.className = "calendar-day";
@@ -260,7 +365,7 @@ document.addEventListener("DOMContentLoaded", () => {
       slot.type = "button";
       slot.className = "calendar-slot";
 
-      const available = isAvailable(day, time);
+      const available = isAvailable(day, time, availabilityMap);
 
       slot.textContent = available
         ? `${time}  •  Click to Schedule`
@@ -293,89 +398,58 @@ document.addEventListener("DOMContentLoaded", () => {
     return dayElement;
   }
 
-  function renderMonthView() {
+  function renderMonthView(days, availabilityMap) {
 
     calendar.className = "calendar calendar-month-view";
-
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-
-    const startingDay = firstDay.getDay();
 
     const grid = document.createElement("div");
     grid.className = "calendar-grid";
 
     [
-      "SUN",
-      "MON",
-      "TUE",
-      "WED",
-      "THU",
-      "FRI",
-      "SAT"
+      "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"
     ].forEach(day => {
-
       const heading = document.createElement("div");
       heading.className = "calendar-weekday";
       heading.textContent = day;
-
       grid.appendChild(heading);
     });
 
-    // Previous month's filler days.
-    for (let i = 0; i < startingDay; i++) {
+    const startingDay = days[0].getDay();
 
+    for (let i = 0; i < startingDay; i++) {
       const filler = document.createElement("div");
       filler.className = "calendar-day calendar-day--filler";
-
       grid.appendChild(filler);
     }
 
-    for (let dayNumber = 1; dayNumber <= lastDay.getDate(); dayNumber++) {
-
-      const day = new Date(year, month, dayNumber);
-
-      grid.appendChild(createDay(day));
-    }
+    days.forEach(day => {
+      grid.appendChild(createDay(day, availabilityMap));
+    });
 
     calendar.appendChild(grid);
   }
 
-  function renderWeekView() {
+  function renderWeekView(days, availabilityMap) {
 
     calendar.className = "calendar calendar-week-view";
-
-    const weekStart = new Date(currentDate);
-
-    weekStart.setDate(
-      currentDate.getDate() - currentDate.getDay()
-    );
 
     const grid = document.createElement("div");
     grid.className = "calendar-week-grid";
 
-    for (let i = 0; i < 7; i++) {
-
-      const day = new Date(weekStart);
-
-      day.setDate(weekStart.getDate() + i);
-
-      grid.appendChild(createDay(day));
-    }
+    days.forEach(day => {
+      grid.appendChild(createDay(day, availabilityMap));
+    });
 
     calendar.appendChild(grid);
   }
 
-  function selectAppointment(date, time) {
+  async function selectAppointment(date, time) {
 
     selectedDate = new Date(date);
     selectedTime = time;
 
-    updateDateDropdown();
-    updateTimeDropdown();
+    await updateDateDropdown();
+    await updateTimeDropdown();
 
     selectionMessage.textContent =
       `${displayDate(date)} at ${time}`;
@@ -384,30 +458,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
     submitButton.disabled = false;
 
-    renderCalendar();
+    await renderCalendar();
   }
 
-  function updateDateDropdown() {
-
+  async function updateDateDropdown() {
+    const days = monthDays(currentDate);
+    const availabilityMap = await collectAvailability(days);
+    
     dateSelect.innerHTML = "";
-
-    const selectedOption = document.createElement("option");
-
-    selectedOption.value = formatDate(selectedDate);
-    selectedOption.textContent = displayDate(selectedDate);
-    selectedOption.selected = true;
-
-    dateSelect.appendChild(selectedOption);
+    
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "SELECT DATE";
+    placeholder.disabled = true;
+    
+    if (!selectedDate) {
+      placeholder.selected = true;
+    }
+    
+    dateSelect.appendChild(placeholder);
+      
+    days.forEach(day => {
+      const times = availabilityMap[formatDate(day)] || [];
+      
+      if (times.length === 0) {
+        return;
+      }
+      
+      const option = document.createElement("option");
+      
+      option.value = formatDate(day);
+      option.textContent = displayDate(day);
+      
+      if (selectedDate && formatDate(selectedDate) === formatDate(day)) {
+        option.selected = true;
+      }
+      
+      dateSelect.appendChild(option);
+      
+    });
+      
+    if (dateSelect.options.length === 1) {
+    
+      const option = document.createElement("option");
+      
+       option.value = "";
+       option.textContent = "NO AVAILABLE DATES";
+       dateSelect.appendChild(option);
+    }
   }
 
-  function updateTimeDropdown() {
+  async function updateTimeDropdown() {
+
+    const availabilityMap = await collectAvailability([selectedDate]);
 
     timeSelect.disabled = false;
     timeSelect.innerHTML = "";
 
     timeSlots.forEach(time => {
 
-      if (!isAvailable(selectedDate, time)) {
+      if (!isAvailable(selectedDate, time, availabilityMap)) {
         return;
       }
 
@@ -422,35 +532,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
       timeSelect.appendChild(option);
     });
-  }
 
-  dateSelect.addEventListener("change", () => {
+    if (![...timeSelect.options].some(opt => opt.value === selectedTime)) {
+      selectedTime = timeSelect.options[0] ? timeSelect.options[0].value : null;
+      if (selectedTime) {
+        timeSelect.value = selectedTime;
+      }
+    }
+  }
+  
+  function updateCalendarToggle() {
+    const isHidden = calendarWrapper.classList.contains("calendar-hidden");
+    
+    calendarToggle.textContent = isHidden
+      ? "SHOW CALENDAR"
+      : "HIDE CALENDAR";
+    
+    calendarToggle.setAttribute(
+      "aria-expanded",
+      String(!isHidden)
+    );
+  }
+  
+  calendarToggle.addEventListener("click", () => {
+    calendarWrapper.classList.toggle("calendar-hidden");
+    updateCalendarToggle();
+  });
+
+  dateSelect.addEventListener("change", async () => {
 
     if (!dateSelect.value) {
       return;
     }
 
     selectedDate = new Date(dateSelect.value + "T12:00:00");
-
     selectedTime = null;
 
-    updateTimeDropdown();
+    await updateTimeDropdown();
 
-    const firstAvailable = timeSlots.find(time =>
-      isAvailable(selectedDate, time)
-    );
-
-    if (firstAvailable) {
-      selectedTime = firstAvailable;
-      timeSelect.value = firstAvailable;
-    }
-
-    selectionMessage.textContent =
-      `${displayDate(selectedDate)} at ${selectedTime}`;
+    selectionMessage.textContent = selectedTime
+      ? `${displayDate(selectedDate)} at ${selectedTime}`
+      : `No available times on ${displayDate(selectedDate)}.`;
 
     submitButton.disabled = !selectedTime;
 
-    renderCalendar();
+    await renderCalendar();
   });
 
   timeSelect.addEventListener("change", () => {
@@ -465,7 +591,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCalendar();
   });
 
-  previousButton.addEventListener("click", () => {
+  previousButton.addEventListener("click", async () => {
 
     if (currentView === "week") {
       currentDate.setDate(currentDate.getDate() - 7);
@@ -473,10 +599,11 @@ document.addEventListener("DOMContentLoaded", () => {
       currentDate.setMonth(currentDate.getMonth() - 1);
     }
 
-    renderCalendar();
+    await renderCalendar();
+    await updateDateDropdown();
   });
 
-  nextButton.addEventListener("click", () => {
+  nextButton.addEventListener("click", async () => {
 
     if (currentView === "week") {
       currentDate.setDate(currentDate.getDate() + 7);
@@ -484,7 +611,8 @@ document.addEventListener("DOMContentLoaded", () => {
       currentDate.setMonth(currentDate.getMonth() + 1);
     }
 
-    renderCalendar();
+    await renderCalendar();
+    await updateDateDropdown();
   });
 
   document.querySelectorAll(".calendar-view-button")
@@ -504,8 +632,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-  renderCalendar();
-
+  async function initializeSchedule() {
+  
+    await renderCalendar();
+    await updateDateDropdown();
+    
+    // Hide calendar by default on mobile.
+    if (window.innerWidth <= 700) {
+      calendarWrapper.classList.add("calendar-hidden");
+    }
+    
+    updateCalendarToggle();
+  }
+  
+  initializeSchedule();
+  
 });
 </script>
 {% endblock %}

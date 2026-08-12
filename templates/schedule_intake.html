@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  Schedule Your Free Inspection | Integrity Roof Inspection
+{% endblock %}
+
+{% block meta_description %}
+  Tell us about your home to schedule your free roof inspection with Integrity Roof Inspection.
+{% endblock %}
+
+{% block content %}
+
+<section class="schedule-page">
+
+  <div class="intake-card">
+
+    <h1>SCHEDULE FREE<br>ROOF INSPECTION</h1>
+
+    {% if request.GET.needs_info %}
+      <p class="intake-callout">
+        Let&rsquo;s grab a few details before picking a time.
+      </p>
+    {% endif %}
+
+    {% if form.non_field_errors %}
+      <ul class="intake-error-list">
+        {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <form method="post" class="intake-form" novalidate>
+
+      {% csrf_token %}
+
+      <div class="intake-field">
+        <label for="{{ form.homeowner_names.id_for_label }}">Homeowner Name/s</label>
+        {{ form.homeowner_names }}
+      </div>
+      {% for error in form.homeowner_names.errors %}
+        <p class="intake-field-error">{{ error }}</p>
+      {% endfor %}
+      <p class="intake-subnote">*All homeowners must be present for the inspection results</p>
+
+      <div class="intake-field">
+        <label for="{{ form.phone_number.id_for_label }}">Phone Number</label>
+        {{ form.phone_number }}
+      </div>
+      {% for error in form.phone_number.errors %}
+        <p class="intake-field-error">{{ error }}</p>
+      {% endfor %}
+
+      <div class="intake-field">
+        <label for="{{ form.email.id_for_label }}">Email</label>
+        {{ form.email }}
+      </div>
+      {% for error in form.email.errors %}
+        <p class="intake-field-error">{{ error }}</p>
+      {% endfor %}
+
+      <div class="intake-field">
+        <label for="{{ form.property_address.id_for_label }}">Property Address</label>
+        {{ form.property_address }}
+      </div>
+      {% for error in form.property_address.errors %}
+        <p class="intake-field-error">{{ error }}</p>
+      {% endfor %}
+
+      <div class="intake-field">
+        <label for="{{ form.roof_age.id_for_label }}">Approx. Age of Roof</label>
+        {{ form.roof_age }}
+      </div>
+
+      <div class="intake-field intake-field--textarea">
+        <label for="{{ form.known_issues.id_for_label }}">Known Issues with Roof?</label>
+        {{ form.known_issues }}
+      </div>
+
+      <p class="intake-footnote">
+        You will receive a text/email reminder for your inspection.
+      </p>
+
+      <button type="submit" class="btn btn-primary intake-submit">
+        CONTINUE TO SCHEDULING
+      </button>
+
+    </form>
+
+  </div>
+  <hr class="rule">
+    {% include "partials/star_rating.html" %}
+  <hr class="rule">
+</section>
+    
+<!-- SIGNS YOUR ROOF NEEDS CARE -->
+<section class="schedule-signs reveal">
+  <div class="schedule-signs-image">
+    <img src="{% static 'img/roofer-cropped.jpg' %}" alt="View along a roof ridge overlooking a property, technician's gloved hand in foreground">
+  </div>
+  <div class="signs-body">
+    <p>Our Roof Relamination, Maintenance, and Tune-Up service is designed to restore and protect qualifying roofs, helping homeowners avoid the cost of a full replacement. If your roof qualifies, this service can extend its usable lifespan by 15+ years while saving you thousands of dollars. Through targeted maintenance, reinforcement, and protective treatments, we help maximize the life of your existing roof and keep it performing at its best for years to come.</p>
+  </div>
+</section>
+    
+<section class="testimonials reveal">
+  {% include "partials/testimonials.html" %}
+</section>
+
+{% endblock %}
