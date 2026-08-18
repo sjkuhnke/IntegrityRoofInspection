@@ -135,7 +135,7 @@ def _company_notification_message(appointment, extra_note=""):
         f"Manage this appointment: {manage_booking_url(appointment)}",
     ]
     header = f"{extra_note}Booking: {appointment.booking_number}\n\n" if extra_note else (
-        f"New inspection booked: {appointment.booking_number}\n\n"
+        f"New Inspection Booked: {appointment.booking_number}\n\n"
     )
     return header + "\n".join(lines)
 
@@ -143,7 +143,7 @@ def _company_notification_message(appointment, extra_note=""):
 def send_new_booking_notifications(appointment):
     """Confirmation to the homeowner (per their preference) + always to the company."""
     request = appointment.inspection_request
-    subject = f"Your roof inspection is booked - {appointment.booking_number}"
+    subject = f"Your Roof Inspection Is Booked - {appointment.booking_number}"
 
     if request.wants_email:
         _send_email(
@@ -158,7 +158,7 @@ def send_new_booking_notifications(appointment):
 
     _send_email(
         COMPANY_NOTIFICATION_EMAIL,
-        subject=f"New inspection booked - {appointment.booking_number}",
+        subject=f"New Inspection Booked - {appointment.booking_number}",
         body=_company_notification_message(appointment),
     )
 
@@ -199,7 +199,7 @@ def send_reschedule_notifications(appointment, previous_date_time):
     """
     request = appointment.inspection_request
     previous_summary = _date_time_summary(*previous_date_time)
-    subject = f"Your roof inspection was rescheduled - {appointment.booking_number}"
+    subject = f"Your Roof Inspection Was Rescheduled - {appointment.booking_number}"
 
     if request.wants_email:
         _send_email(
@@ -251,7 +251,7 @@ def _cancellation_html(appointment):
 
 def send_cancellation_notifications(appointment):
     request = appointment.inspection_request
-    subject = f"Your roof inspection was cancelled - {appointment.booking_number}"
+    subject = f"Your Roof Inspection Was Cancelled - {appointment.booking_number}"
 
     if request.wants_email:
         _send_email(

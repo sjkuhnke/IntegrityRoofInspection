@@ -1,0 +1,1 @@
+web: gunicorn IntegrityRoofInspection.wsgi --log-file -
