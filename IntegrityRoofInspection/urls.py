@@ -7,6 +7,8 @@ from portfolioapp import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.home, name="home"),
+    path("terms/", views.terms, name="terms"),
+    path("privacy/", views.privacy, name="privacy"),
     path("schedule/start/", views.schedule_intake, name="schedule_intake"),
     path("schedule/reset/", views.schedule_reset, name="schedule_reset"),
     path("schedule/", views.schedule, name="schedule"),
