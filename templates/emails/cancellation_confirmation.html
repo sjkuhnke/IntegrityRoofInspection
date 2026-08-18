@@ -1,0 +1,39 @@
+{% extends "emails/email_base.html" %}
+
+{% block title %}Your inspection was cancelled{% endblock %}
+{% block preheader %}Your free roof inspection on {{ appointment_summary }} has been cancelled.{% endblock %}
+
+{% block heading %}Your inspection has been cancelled{% endblock %}
+
+{% block body %}
+<p style="margin:0 0 16px 0;">
+  As requested, your free roof inspection with Integrity Roof Inspection has been cancelled.
+</p>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%; background-color:#f7f5f1; border-radius:6px; margin:0 0 16px 0;">
+  <tr>
+    <td style="padding:16px 20px;">
+      <p style="margin:0 0 4px 0; font-size:12px; letter-spacing:0.5px; color:#8a8a8a; text-transform:uppercase;">Cancelled date &amp; time</p>
+      <p style="margin:0 0 12px 0; font-size:14px; color:#767676; text-decoration:line-through;">{{ appointment_summary }}</p>
+      <p style="margin:0 0 4px 0; font-size:12px; letter-spacing:0.5px; color:#8a8a8a; text-transform:uppercase;">Booking confirmation number</p>
+      <p style="margin:0; font-size:14px; color:#767676;">{{ booking_number }}</p>
+    </td>
+  </tr>
+</table>
+
+<p style="margin:0;">Changed your mind? You're welcome to schedule a new free inspection any time.</p>
+{% endblock %}
+
+{% block button %}
+{% if schedule_url %}
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:24px 0 8px 0;">
+  <tr>
+    <td style="border-radius:5px; background-color:#e6342a;">
+      <a href="{{ schedule_url }}" style="display:inline-block; padding:13px 28px; font-family:Arial, Helvetica, sans-serif; font-size:14px; font-weight:bold; letter-spacing:0.3px; color:#ffffff; text-decoration:none; border-radius:5px;">
+        SCHEDULE A NEW INSPECTION
+      </a>
+    </td>
+  </tr>
+</table>
+{% endif %}
+{% endblock %}

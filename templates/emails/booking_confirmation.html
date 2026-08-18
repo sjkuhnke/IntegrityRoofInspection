@@ -1,0 +1,24 @@
+{% extends "emails/email_base.html" %}
+
+{% block title %}Your inspection is booked{% endblock %}
+{% block preheader %}Your free roof inspection is confirmed for {{ appointment_summary }}.{% endblock %}
+
+{% block heading %}Your free roof inspection is booked!{% endblock %}
+
+{% block body %}
+<p style="margin:0 0 16px 0;">Thanks for scheduling your free roof inspection with Integrity Roof Inspection.</p>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%; background-color:#f7f5f1; border-radius:6px; margin:0 0 16px 0;">
+  <tr>
+    <td style="padding:16px 20px;">
+      <p style="margin:0 0 4px 0; font-size:12px; letter-spacing:0.5px; color:#8a8a8a; text-transform:uppercase;">Date &amp; time</p>
+      <p style="margin:0 0 12px 0; font-size:16px; font-weight:bold; color:#1a1a1a;">{{ appointment_summary }}</p>
+      <p style="margin:0 0 4px 0; font-size:12px; letter-spacing:0.5px; color:#8a8a8a; text-transform:uppercase;">Booking confirmation number</p>
+      <p style="margin:0; font-size:16px; font-weight:bold; color:#1a1a1a; letter-spacing:0.5px;">{{ booking_number }}</p>
+    </td>
+  </tr>
+</table>
+
+<p style="margin:0 0 16px 0;">Save this number if you need to reference your appointment later. Please make sure all homeowners are present at the time of the inspection.</p>
+<p style="margin:0;">Need to change or cancel? Use the button below.</p>
+{% endblock %}

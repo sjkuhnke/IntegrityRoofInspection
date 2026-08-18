@@ -1,0 +1,80 @@
+<!-- CALENDAR -->
+<div class="schedule-calendar-section">
+
+  <div class="calendar-toolbar">
+
+    <button
+      type="button"
+      class="calendar-nav-button"
+      id="previous-month"
+      aria-label="Previous month">
+      &#9664;
+    </button>
+
+    <div class="calendar-month">
+      <h2 id="calendar-month-label"></h2>
+    </div>
+
+    <button
+      type="button"
+      class="calendar-nav-button"
+      id="next-month"
+      aria-label="Next month">
+      &#9654;
+    </button>
+
+  </div>
+
+  <div class="calendar-view-controls">
+
+    <button
+      type="button"
+      class="calendar-view-button active"
+      data-view="month">
+      MONTH VIEW
+    </button>
+
+    <button
+      type="button"
+      class="calendar-view-button"
+      data-view="week">
+      WEEK VIEW
+    </button>
+
+  </div>
+
+  <div class="calendar-legend">
+
+    <span>
+      <i class="legend-dot legend-available"></i>
+      AVAILABLE
+    </span>
+
+    <span>
+      <i class="legend-dot legend-unavailable"></i>
+      UNAVAILABLE
+    </span>
+
+    <span>
+      <i class="legend-dot legend-selected"></i>
+      SELECTED
+    </span>
+
+  </div>
+
+  <!-- MOBILE CALENDAR TOGGLE -->
+  <button
+    type="button"
+    class="calendar-toggle-button"
+    id="calendar-toggle"
+    aria-expanded="false"
+    aria-controls="calendar-wrapper">
+
+    SHOW CALENDAR
+
+  </button>
+
+  <div id="calendar-wrapper" class="calendar-wrapper">
+    <div id="calendar" class="calendar" aria-busy="false"></div>
+  </div>
+</div>

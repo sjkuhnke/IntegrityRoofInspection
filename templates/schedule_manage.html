@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  Manage Your Inspection | Integrity Roof Inspection
+{% endblock %}
+
+{% block meta_description %}
+  View, reschedule, or cancel your free roof inspection with Integrity Roof Inspection.
+{% endblock %}
+
+{% block content %}
+
+<section class="manage-page">
+
+  <div class="manage-summary-card">
+
+    <h1>MANAGE YOUR<br>INSPECTION</h1>
+
+    {% if manage_success %}
+      <div class="schedule-success-banner" role="status">
+        {{ manage_success }}
+      </div>
+    {% endif %}
+
+    {% if manage_error %}
+      <div class="schedule-error-banner" role="alert">
+        {{ manage_error }}
+      </div>
+    {% endif %}
+
+    <div class="manage-summary-row">
+      <div>
+        <p class="manage-summary-label">Booking confirmation number</p>
+        <p class="manage-summary-value">{{ appointment.booking_number }}</p>
+      </div>
+      <div>
+        <p class="manage-summary-label">
+          {% if appointment.is_cancelled %}Cancelled date &amp; time{% else %}Current date &amp; time{% endif %}
+        </p>
+        <p class="manage-summary-value{% if appointment.is_cancelled %} manage-summary-value--cancelled{% endif %}">
+          {{ appointment.date|date:"F j, Y" }} at {{ appointment.time_label }}
+        </p>
+      </div>
+      <div>
+        <p class="manage-summary-label">Status</p>
+        <p class="manage-summary-value manage-status manage-status--{{ appointment.status }}">
+          {{ appointment.get_status_display }}
+        </p>
+      </div>
+    </div>
+
+    <p class="manage-summary-name">{{ appointment.inspection_request.homeowner_names }} - {{ appointment.inspection_request.property_address }}</p>
+
+  </div>
+
+  {% if appointment.is_cancelled %}
+
+    <div class="manage-cancelled-note">
+      <p>This appointment has been cancelled. If you'd like to schedule a new free inspection, we're happy to have you.</p>
+      <a href="{% url 'schedule_intake' %}" class="btn btn-primary">SCHEDULE A NEW INSPECTION</a>
+    </div>
+
+  {% else %}
+
+  <div class="schedule-picker">
+
+    <div class="schedule-heading">
+      <h2>RESCHEDULE THIS INSPECTION</h2>
+      <p>
+        Choose a new available date and time below, then confirm.
+        Your current time stays reserved until you save a new one.
+      </p>
+    </div>
+
+    <section class="schedule-selection">
+
+      <h2>YOUR SELECTED DATE &amp; TIME:</h2>
+
+      <form
+        method="post"
+        action="{% url 'manage_reschedule' appointment.booking_number %}"
+        id="schedule-form">
+
+        {% csrf_token %}
+
+        <div class="schedule-select-row">
+
+          <label>
+            <span class="sr-only">Date</span>
+
+            <select name="date" id="date-select" required>
+              <option value="">SELECT DATE</option>
+            </select>
+          </label>
+
+          <span class="selection-at">AT</span>
+
+          <label>
+            <span class="sr-only">Time</span>
+
+            <select name="time" id="time-select" required disabled>
+              <option value="">SELECT TIME</option>
+            </select>
+          </label>
+
+        </div>
+
+        <p class="selection-message" id="selection-message">
+          Select a new date and time.
+        </p>
+
+        <label class="confirmation-check">
+
+          <input
+            type="checkbox"
+            name="confirmed"
+            required>
+
+          <span>
+            I have confirmed the new date and time are correct,
+            and all homeowners will be present.
+          </span>
+
+        </label>
+
+        <button
+          type="submit"
+          class="btn btn-primary schedule-submit"
+          id="schedule-submit"
+          disabled>
+          SAVE NEW DATE &amp; TIME
+        </button>
+
+      </form>
+
+    </section>
+
+    {% include "partials/schedule_calendar_widget.html" %}
+
+  </div>
+
+  <div class="manage-cancel-card">
+
+    <h2>CANCEL THIS INSPECTION</h2>
+    <p>If you no longer need this appointment, you can cancel it here. This can't be undone, but you're welcome to book a new time any time.</p>
+
+    <form
+      method="post"
+      action="{% url 'manage_cancel' appointment.booking_number %}"
+      id="cancel-form">
+
+      {% csrf_token %}
+
+      <button type="submit" class="btn btn-danger" id="cancel-submit">
+        CANCEL MY APPOINTMENT
+      </button>
+
+    </form>
+
+  </div>
+
+  {% endif %}
+
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+{% if not appointment.is_cancelled %}
+<script>
+  window.SCHEDULE_CONFIG = {
+    initialDate: "{{ appointment.date|date:'Y-m-d' }}",
+    initialSelectedDate: "{{ appointment.date|date:'Y-m-d' }}",
+    initialSelectedTime: "{{ appointment.time_label }}",
+    availabilityUrl: "{% url 'schedule_availability' %}",
+    excludeBookingNumber: "{{ appointment.booking_number }}",
+    timeSlots: {{ time_slots|safe|default:"[]" }},
+    slotAvailableLabel: "Click to Select"
+  };
+</script>
+<script src="{% static 'js/schedule-calendar.js' %}"></script>
+{% endif %}
+{% endblock %}

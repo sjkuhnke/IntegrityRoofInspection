@@ -85,19 +85,22 @@ p { margin: 0 0 1rem; color: var(--color-text-muted); }
    ========================================================================== */
 .btn {
   font-family: var(--font-display), serif;
-  font-size: clamp(1.2rem, 2.2vw, 2.5rem);
+  font-size: clamp(1.2rem, 2.2vw, 2rem);
   letter-spacing: 0.02em;
   border: none;
   border-radius: var(--radius-pill);
   cursor: pointer;
-  padding: 1.1rem 2.5rem;
+  padding: 0.75rem 2rem;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .btn-primary {
   background: #ffffff;
   color: var(--color-accent);
+  display: flex;
+  justify-content: center;
 }
 
 .btn-primary span { color: var(--color-accent); }
@@ -567,6 +570,12 @@ p { margin: 0 0 1rem; color: var(--color-text-muted); }
 
 .site-footer-contact a:hover { color: var(--color-text); }
 
+.site-footer-manage-link {
+  margin-top: 0.75rem;
+  font-size: 0.85rem !important;
+  color: var(--color-accent-hover) !important;
+}
+
 .site-footer-legal {
   max-width: var(--container-max);
   margin: 2.5rem auto 0;
@@ -653,7 +662,7 @@ p { margin: 0 0 1rem; color: var(--color-text-muted); }
 .schedule-calendar-section {
   background: var(--color-bg-raised);
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .calendar-toolbar {
@@ -1069,7 +1078,7 @@ p { margin: 0 0 1rem; color: var(--color-text-muted); }
     padding: 13px 20px;
     border: 2px solid #666;
     border-radius: 25px;
-    background: transparent;
+    background: var(--color-bg-light);
     color: var(--color-text);
     font-family: var(--font-display), serif;
     font-size: 18px;
@@ -1100,6 +1109,7 @@ p { margin: 0 0 1rem; color: var(--color-text-muted); }
 .confirmation-page {
   display: flex;
   justify-content: center;
+  padding: clamp(2.5rem, 5vw, 5rem);
 }
 
 .confirmation-card {
@@ -1423,7 +1433,7 @@ p { margin: 0 0 1rem; color: var(--color-text-muted); }
 }
 
 .intake-field-error {
-  margin: -0.5rem 0 1rem 196px;
+  margin: -0.7rem 0 0.5rem 196px;
   color: var(--color-accent-hover);
   font-size: 0.8rem;
 }
@@ -1474,4 +1484,264 @@ p { margin: 0 0 1rem; color: var(--color-text-muted); }
   color: var(--color-text);
   font-size: 0.95rem;
   text-align: center;
+}
+
+/* ==========================================================================
+   Schedule page - edit info back-link
+   ========================================================================== */
+
+.schedule-info-bar {
+  max-width: var(--container-max);
+  margin: 0 auto 1rem;
+  text-align: right;
+}
+
+.schedule-edit-info {
+  color: var(--color-text-muted);
+  font-family: var(--font-display), serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-rule);
+  padding: 0.2rem;
+  margin: 0.5rem;
+  transition: color var(--transition-base), border-color var(--transition-base);
+}
+
+.schedule-edit-info:hover {
+  color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+
+/* ==========================================================================
+   Intake - editing an existing request / start over
+   ========================================================================== */
+
+.intake-editing-note {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  margin: 0 0 1.5rem;
+}
+
+.intake-editing-note a {
+  color: var(--color-accent-hover);
+  margin-left: 0.4rem;
+}
+
+
+/* ==========================================================================
+   Intake - notification preference radios
+   ========================================================================== */
+
+.intake-field--radio {
+  display: block;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.intake-field--radio label {
+  margin-top: 0.75rem;
+}
+
+.intake-radio-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.intake-radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color var(--transition-base), background var(--transition-base);
+}
+
+.intake-radio-option:has(input:checked) {
+  border-color: var(--color-accent);
+  background: rgba(230, 52, 42, 0.14);
+}
+
+.intake-radio-option input {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--color-accent);
+}
+
+@media (max-width: 640px) {
+
+  .schedule-info-bar {
+    text-align: center;
+  }
+
+}
+
+/* ==========================================================================
+   Manage appointment (view / reschedule / cancel)
+   ========================================================================== */
+
+.manage-page {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 5vw, 5rem);
+}
+
+.manage-summary-card {
+  max-width: 900px;
+  margin: 0 auto 2rem;
+  padding: clamp(1.75rem, 4vw, 3rem);
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-rule);
+  border-top: 4px solid var(--color-accent);
+  text-align: center;
+}
+
+.manage-summary-card h1 {
+  font-size: clamp(1.8rem, 4vw, 2.75rem);
+  margin-bottom: 1.5rem;
+}
+
+.manage-summary-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin: 0 auto 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+}
+
+.manage-summary-label {
+  color: var(--color-text-muted);
+  font-family: var(--font-display), serif;
+  letter-spacing: 0.03em;
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.manage-summary-value {
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.manage-summary-value--cancelled {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+.manage-status {
+  display: inline-block;
+  padding: 0.2rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+}
+
+.manage-status--scheduled {
+  background: var(--color-available-soft);
+  border: 1px solid var(--color-available-border);
+  color: var(--color-available);
+}
+
+.manage-status--cancelled {
+  background: rgba(230, 52, 42, 0.14);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent-hover);
+}
+
+.manage-status--completed {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--color-rule);
+  color: var(--color-text-muted);
+}
+
+.manage-summary-name {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.schedule-success-banner {
+  max-width: var(--container-max);
+  margin: 0 auto 1.5rem;
+  padding: 1rem 1.5rem;
+  background: var(--color-available-soft);
+  border: 1px solid var(--color-available-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.manage-cancelled-note {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(1.75rem, 4vw, 3rem);
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-rule);
+  text-align: center;
+}
+
+.manage-cancelled-note p {
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.manage-cancel-card {
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto 3rem;
+  padding: clamp(1.75rem, 4vw, 2.5rem);
+  border: 1px solid var(--color-rule);
+  border-top: 3px solid var(--color-accent);
+  background: var(--color-bg-raised);
+  text-align: center;
+}
+
+.manage-cancel-card h2 {
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  margin-bottom: 0.75rem;
+}
+
+.manage-cancel-card p {
+  max-width: 60ch;
+  margin: 0 auto 1.5rem;
+  color: var(--color-text-muted);
+}
+
+.btn-danger {
+  background: transparent;
+  color: var(--color-accent-hover);
+  border: 1px solid var(--color-accent);
+  display: flex;
+  justify-self: center;
+}
+
+.btn-danger:hover,
+.btn-danger:focus-visible {
+  background: var(--color-accent);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+.btn-danger:focus-visible { outline: 3px solid var(--color-accent-hover); outline-offset: 3px; }
+
+@media (max-width: 640px) {
+
+  .manage-summary-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
 }

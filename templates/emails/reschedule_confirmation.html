@@ -1,0 +1,25 @@
+{% extends "emails/email_base.html" %}
+
+{% block title %}Your inspection was rescheduled{% endblock %}
+{% block preheader %}Your free roof inspection has been moved to {{ appointment_summary }}.{% endblock %}
+
+{% block heading %}Your inspection has been rescheduled{% endblock %}
+
+{% block body %}
+<p style="margin:0 0 16px 0;">Your free roof inspection with Integrity Roof Inspection has been moved.</p>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%; background-color:#f7f5f1; border-radius:6px; margin:0 0 16px 0;">
+  <tr>
+    <td style="padding:16px 20px;">
+      <p style="margin:0 0 4px 0; font-size:12px; letter-spacing:0.5px; color:#8a8a8a; text-transform:uppercase;">Previous date &amp; time</p>
+      <p style="margin:0 0 12px 0; font-size:14px; color:#767676; text-decoration:line-through;">{{ previous_summary }}</p>
+      <p style="margin:0 0 4px 0; font-size:12px; letter-spacing:0.5px; color:#8a8a8a; text-transform:uppercase;">New date &amp; time</p>
+      <p style="margin:0 0 12px 0; font-size:16px; font-weight:bold; color:#1a1a1a;">{{ appointment_summary }}</p>
+      <p style="margin:0 0 4px 0; font-size:12px; letter-spacing:0.5px; color:#8a8a8a; text-transform:uppercase;">Booking confirmation number</p>
+      <p style="margin:0; font-size:16px; font-weight:bold; color:#1a1a1a; letter-spacing:0.5px;">{{ booking_number }}</p>
+    </td>
+  </tr>
+</table>
+
+<p style="margin:0;">Please make sure all homeowners are present at the new time.</p>
+{% endblock %}

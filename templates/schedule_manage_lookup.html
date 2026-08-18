@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Manage Your Inspection | Integrity Roof Inspection
+{% endblock %}
+
+{% block meta_description %}
+  Look up your free roof inspection appointment to view, reschedule, or cancel it.
+{% endblock %}
+
+{% block content %}
+
+<section class="manage-page">
+
+  <div class="intake-card">
+
+    <h1>MANAGE YOUR<br>INSPECTION</h1>
+
+    <p class="intake-callout">
+      Enter the booking confirmation number from your confirmation email or text to view, reschedule, or cancel your appointment.
+    </p>
+
+    {% if form.non_field_errors %}
+      <ul class="intake-error-list">
+        {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <form method="post" class="intake-form" novalidate>
+
+      {% csrf_token %}
+
+      <div class="intake-field">
+        <label for="{{ form.booking_number.id_for_label }}">Booking Confirmation Number</label>
+        {{ form.booking_number }}
+      </div>
+      {% for error in form.booking_number.errors %}
+        <p class="intake-field-error">{{ error }}</p>
+      {% endfor %}
+
+      <button type="submit" class="btn btn-primary intake-submit">
+        FIND MY APPOINTMENT
+      </button>
+
+    </form>
+
+  </div>
+
+</section>
+
+{% endblock %}

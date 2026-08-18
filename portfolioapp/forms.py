@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import InspectionRequest
+from .models import Appointment, InspectionRequest
 
 
 class InspectionRequestForm(forms.ModelForm):
@@ -13,6 +13,7 @@ class InspectionRequestForm(forms.ModelForm):
             "property_address",
             "roof_age",
             "known_issues",
+            "notification_preference",
         ]
         widgets = {
             "homeowner_names": forms.TextInput(
@@ -32,6 +33,7 @@ class InspectionRequestForm(forms.ModelForm):
                     "rows": 3,
                 }
             ),
+            "notification_preference": forms.RadioSelect,
         }
         labels = {
             "homeowner_names": "Homeowner Name/s",
@@ -40,6 +42,7 @@ class InspectionRequestForm(forms.ModelForm):
             "property_address": "Property Address",
             "roof_age": "Approx. Age of Roof",
             "known_issues": "Known Issues with Roof?",
+            "notification_preference": "How should we send your confirmation and reminders?",
         }
 
     def clean_phone_number(self):
@@ -48,3 +51,27 @@ class InspectionRequestForm(forms.ModelForm):
         if len(digits) < 10:
             raise forms.ValidationError("Enter a valid phone number.")
         return phone
+
+
+class BookingLookupForm(forms.Form):
+    """
+    The "Manage My Appointment" gate - just the booking number, since
+    that's the same unguessable credential the confirmation/email link
+    already relies on.
+    """
+
+    booking_number = forms.CharField(
+        label="Booking Confirmation Number",
+        widget=forms.TextInput(attrs={"placeholder": "IRI-XXXX-XXXX"}),
+    )
+
+    def clean_booking_number(self):
+        raw = self.cleaned_data["booking_number"]
+        appointment = Appointment.find_by_booking_number(raw)
+        if appointment is None:
+            raise forms.ValidationError(
+                "We couldn't find an appointment with that confirmation "
+                "number. Double check it and try again."
+            )
+        self.cleaned_data["appointment"] = appointment
+        return raw

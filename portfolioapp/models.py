@@ -2,6 +2,8 @@ import secrets
 
 from django.db import models
 
+from . import availability
+
 
 # Characters chosen to avoid visual ambiguity when read aloud or typed
 BOOKING_NUMBER_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
@@ -21,6 +23,19 @@ def _random_booking_number():
     return BOOKING_NUMBER_PREFIX + "-".join(parts)
 
 
+def normalize_booking_number(raw):
+    """
+    Booking numbers are shown to homeowners in a fixed, uppercase,
+    dash-separated format, but people retyping one from memory (or a
+    phone screenshot) will often lowercase it, add stray spaces, or
+    drop/duplicate a dash. Normalize before ever comparing/looking one
+    up so those harmless variations still find the right appointment.
+    """
+    if not raw:
+        return ""
+    return "".join(raw.split()).upper()
+
+
 class InspectionRequest(models.Model):
     """
     Homeowner intake info, captured by the gate form *before* a specific
@@ -30,6 +45,15 @@ class InspectionRequest(models.Model):
     data itself).
     """
 
+    NOTIFY_EMAIL = "email"
+    NOTIFY_TEXT = "text"
+    NOTIFY_BOTH = "both"
+    NOTIFICATION_CHOICES = [
+        (NOTIFY_EMAIL, "Email only"),
+        (NOTIFY_TEXT, "Text only"),
+        (NOTIFY_BOTH, "Both email and text"),
+    ]
+
     homeowner_names = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=30)
     email = models.EmailField()
@@ -37,10 +61,25 @@ class InspectionRequest(models.Model):
     roof_age = models.CharField(max_length=100, blank=True)
     known_issues = models.TextField(blank=True)
 
+    notification_preference = models.CharField(
+        max_length=10,
+        choices=NOTIFICATION_CHOICES,
+        default=NOTIFY_EMAIL,
+        help_text="How the homeowner wants booking confirmations and reminders sent.",
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.homeowner_names} ({self.property_address})"
+
+    @property
+    def wants_email(self):
+        return self.notification_preference in (self.NOTIFY_EMAIL, self.NOTIFY_BOTH)
+
+    @property
+    def wants_text(self):
+        return self.notification_preference in (self.NOTIFY_TEXT, self.NOTIFY_BOTH)
 
 
 class Appointment(models.Model):
@@ -85,6 +124,11 @@ class Appointment(models.Model):
         max_length=20, choices=STATUS_CHOICES, default=STATUS_SCHEDULED
     )
 
+    # Tracked so the reminder command never sends the same reminder twice,
+    # no matter how often (or irregularly) it happens to run.
+    reminder_24h_sent_at = models.DateTimeField(null=True, blank=True)
+    reminder_1h_sent_at = models.DateTimeField(null=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -100,6 +144,28 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"{self.booking_number} — {self.date} at {self.time_label}"
+
+    @property
+    def start_datetime(self):
+        """Timezone-aware Central-Time datetime this appointment starts."""
+        return availability.slot_datetime(self.date, self.time_label)
+
+    @property
+    def is_cancelled(self):
+        return self.status == self.STATUS_CANCELLED
+
+    @classmethod
+    def find_by_booking_number(cls, raw_booking_number):
+        """
+        Case/whitespace-tolerant lookup used by the "manage my appointment"
+        flow, where a homeowner is retyping a number instead of clicking
+        a link. Returns None rather than raising so callers can show a
+        friendly "we couldn't find that" message instead of a 404/500.
+        """
+        normalized = normalize_booking_number(raw_booking_number)
+        if not normalized:
+            return None
+        return cls.objects.filter(booking_number=normalized).first()
 
     def save(self, *args, **kwargs):
         if not self.booking_number:
@@ -117,4 +183,3 @@ class Appointment(models.Model):
             "Could not generate a unique booking number after "
             f"{max_attempts} attempts."
         )
-    

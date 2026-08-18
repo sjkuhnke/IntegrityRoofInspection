@@ -15,7 +15,14 @@
 
   <div class="intake-card">
 
-    <h1>SCHEDULE FREE<br>ROOF INSPECTION</h1>
+    <h1>{% if is_editing %}UPDATE YOUR<br>INFO{% else %}SCHEDULE FREE<br>ROOF INSPECTION{% endif %}</h1>
+
+    {% if is_editing %}
+      <p class="intake-editing-note">
+        Editing your info from before.
+        <a href="{% url 'schedule_reset' %}">Not you? Start over</a>
+      </p>
+    {% endif %}
 
     {% if request.GET.needs_info %}
       <p class="intake-callout">
@@ -76,6 +83,18 @@
       <div class="intake-field intake-field--textarea">
         <label for="{{ form.known_issues.id_for_label }}">Known Issues with Roof?</label>
         {{ form.known_issues }}
+      </div>
+
+      <div class="intake-field intake-field--radio">
+        <label>How should we send your confirmation &amp; reminders?</label>
+        <div class="intake-radio-group">
+          {% for radio in form.notification_preference %}
+            <label class="intake-radio-option">
+              {{ radio.tag }}
+              <span>{{ radio.choice_label }}</span>
+            </label>
+          {% endfor %}
+        </div>
       </div>
 
       <p class="intake-footnote">
