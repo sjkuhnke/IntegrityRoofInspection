@@ -251,6 +251,7 @@ p { margin: 0 0 1rem; color: var(--color-text-muted); }
 .hero-headline {
   font-size: clamp(2.4rem, 6vw, 6.5rem);
   text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  white-space: nowrap;
 }
 
 .hero-subhead {
