@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   {% block extra_head %}{% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 
   <header class="site-header">
     <div class="site-header-inner">
@@ -33,16 +33,16 @@
       <nav class="main-nav" aria-label="Primary">
         <a href="{% url 'home' %}#schedule">SCHEDULE INSPECTION</a>
         <span aria-hidden="true">|</span>
-        <a href="{% url 'home' %}#about">ABOUT US</a>
-        <span aria-hidden="true">|</span>
         <a href="{% url 'home' %}#information">INFORMATION</a>
+        <span aria-hidden="true">|</span>
+        <a href="{% url 'home' %}#about">ABOUT US</a>
       </nav>
     </div>
 
     <nav id="mobile-nav" class="mobile-nav" aria-label="Primary mobile">
       <a href="{% url 'home' %}#schedule">SCHEDULE INSPECTION</a>
-      <a href="{% url 'home' %}#about">ABOUT US</a>
       <a href="{% url 'home' %}#information">INFORMATION</a>
+      <a href="{% url 'home' %}#about">ABOUT US</a>
     </nav>
   </header>
 

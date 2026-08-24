@@ -11,7 +11,6 @@ class InspectionRequestForm(forms.ModelForm):
             "phone_number",
             "email",
             "property_address",
-            "roof_age",
             "known_issues",
             "notification_preference",
         ]
@@ -19,17 +18,14 @@ class InspectionRequestForm(forms.ModelForm):
             "homeowner_names": forms.TextInput(
                 attrs={"placeholder": "e.g. John & Jane Smith"}
             ),
-            "phone_number": forms.TextInput(attrs={"placeholder": "(262) 555-0142"}),
+            "phone_number": forms.TextInput(attrs={"placeholder": "(414) 123-4567"}),
             "email": forms.EmailInput(attrs={"placeholder": "you@example.com"}),
             "property_address": forms.TextInput(
                 attrs={"placeholder": "123 Main St, City, WI"}
             ),
-            "roof_age": forms.TextInput(
-                attrs={"placeholder": "e.g. 12 years, not sure"}
-            ),
             "known_issues": forms.Textarea(
                 attrs={
-                    "placeholder": "Leaks, missing shingles, sagging, etc. (optional)",
+                    "placeholder": "Additional Information",
                     "rows": 3,
                 }
             ),
@@ -40,8 +36,7 @@ class InspectionRequestForm(forms.ModelForm):
             "phone_number": "Phone Number",
             "email": "Email",
             "property_address": "Property Address",
-            "roof_age": "Approx. Age of Roof",
-            "known_issues": "Known Issues with Roof?",
+            "known_issues": "Additional Information (Optional)",
             "notification_preference": "How should we send your confirmation and reminders?",
         }
 

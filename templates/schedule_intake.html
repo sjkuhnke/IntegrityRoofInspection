@@ -9,6 +9,8 @@
   Tell us about your home to schedule your free roof inspection with Integrity Roof Inspection.
 {% endblock %}
 
+{% block body_class %}nav-minimal{% endblock %}
+
 {% block content %}
 
 <section class="schedule-page">
@@ -75,13 +77,8 @@
         <p class="intake-field-error">{{ error }}</p>
       {% endfor %}
 
-      <div class="intake-field">
-        <label for="{{ form.roof_age.id_for_label }}">Approx. Age of Roof</label>
-        {{ form.roof_age }}
-      </div>
-
       <div class="intake-field intake-field--textarea">
-        <label for="{{ form.known_issues.id_for_label }}">Known Issues with Roof?</label>
+        <label for="{{ form.known_issues.id_for_label }}">Additional Information (Optional)</label>
         {{ form.known_issues }}
       </div>
 
