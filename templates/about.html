@@ -1,0 +1,71 @@
+{% extends "base_marketing.html" %}
+{% load static %}
+
+{% block title %}About Us | Integrity Roof Inspection{% endblock %}
+{% block meta_description %}Independent roof inspections built on real roofing industry experience. Learn why Integrity Roof Inspection exists to put homeowners first.{% endblock %}
+{% block marketing_body_class %}site-about{% endblock %}
+
+{% block marketing_content %}
+
+  <!-- HERO -->
+  <section class="about-hero">
+    <div class="about-hero-inner">
+      <span class="about-eyebrow reveal">About Us</span>
+      <h1 class="reveal">Built on trust, experience,<br>and transparency.</h1>
+      <p class="about-hero-subhead reveal">If your roof has leaks, storm damage, missing shingles, or is simply aging, we can help you understand your options before committing to a costly investment.</p>
+    </div>
+
+    <div class="about-hero-image reveal">
+      <img src="{% static 'img/home-shingle-macro.jpg' %}" alt="Close-up of a lifted shingle edge with an exposed roofing nail">
+    </div>
+  </section>
+
+  <!-- OUR MISSION -->
+  <section class="about-mission">
+    <div class="about-mission-inner">
+      <div class="about-mission-copy reveal">
+        <h2>Our Mission</h2>
+        <p class="about-lede">We work for YOU - not the roofing company.</p>
+        <p>At Integrity Roof Inspection, our mission is to give homeowners honest, independent, and transparent roof evaluations backed by real roofing industry experience. Having seen firsthand how high-pressure sales tactics and unnecessary upselling can leave homeowners confused and overspending, we believe people deserve straightforward answers&mdash;not multi-hour sales presentations.</p>
+        <p>Our goal is to provide clear, unbiased inspections that accurately reflect the true condition of a roof and explain all available options in plain language. Whether a roof needs a simple repair, preventative maintenance, or replacement, we empower homeowners with the information they need to make confident decisions based on facts rather than sales pressure.</p>
+        <p>We exist to put homeowners&rsquo; interests first by delivering integrity, education, and peace of mind with every inspection.</p>
+      </div>
+
+      <div class="about-mission-image reveal">
+        <img src="{% static 'img/info-level-tool.jpg' %}" alt="Roof slope measuring tool resting on shingles">
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="about-why">
+    <div class="about-why-inner">
+      <div class="about-why-image reveal">
+        <img src="{% static 'img/about-why-us.jpg' %}" alt="Aerial view of a technician clearing a roof gutter">
+      </div>
+
+      <div class="about-why-copy reveal">
+        <h2>Why Us?</h2>
+        <p class="about-lede">We work for YOU - not the roofing company</p>
+        <p>With the seasons changing, many homeowners are determining it's time for their routine roof inspection. This time, get an INDEPENDENT inspection.</p>
+        <p>If your roof has leaks, storm damage, missing shingles, or is simply aging, we can help you understand your options before committing to a costly investment.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="about-cta">
+    <div class="about-cta-bg" style="background-image:url('{% static "img/hero-roof.jpg" %}');"></div>
+    <div class="about-cta-overlay"></div>
+
+    <div class="about-cta-content reveal">
+      <h2>Ready to understand<br>your roof?</h2>
+
+      <div class="about-cta-right">
+        <p>Our expert inspectors will provide a thorough evaluation of your roof and walk you through the findings, recommendations, and next steps to make sure you're completely informed and comfortable with your roof and your options.</p>
+        <a href="{% url 'contact' %}" class="btn-yellow">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

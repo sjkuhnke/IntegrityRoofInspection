@@ -13,12 +13,14 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Stardos+Stencil:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Stardos+Stencil:wght@400;700&family=Inter:wght@400;500;600;700&family=Fira+Sans:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   {% block extra_head %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
+  {% url 'schedule_home' as schedule_home_url %}
+  {% url 'home' as home_url %}
 
   <header class="site-header">
     <div class="site-header-inner">
@@ -26,23 +28,29 @@
         <span></span><span></span><span></span>
       </button>
 
-      <a href="{% url 'home' %}" class="brand">
+      <a href="{% if request.resolver_match.url_name in "schedule_home,schedule_intake,schedule,schedule_confirmed,manage_lookup,manage_booking" %}{{ schedule_home_url }}{% else %}{{ home_url }}{% endif %}" class="brand">
         <img src="{% static 'img/logo-full.png' %}" alt="Integrity Roof Inspection" class="brand-logo">
       </a>
 
       <nav class="main-nav" aria-label="Primary">
+        {% block nav_links %}
         <a href="{% url 'home' %}#schedule">SCHEDULE INSPECTION</a>
         <span aria-hidden="true">|</span>
         <a href="{% url 'home' %}#information">INFORMATION</a>
         <span aria-hidden="true">|</span>
         <a href="{% url 'home' %}#about">ABOUT US</a>
+        {% endblock %}
       </nav>
+
+      {% block nav_cta %}{% endblock %}
     </div>
 
     <nav id="mobile-nav" class="mobile-nav" aria-label="Primary mobile">
+      {% block mobile_nav_links %}
       <a href="{% url 'home' %}#schedule">SCHEDULE INSPECTION</a>
       <a href="{% url 'home' %}#information">INFORMATION</a>
       <a href="{% url 'home' %}#about">ABOUT US</a>
+      {% endblock %}
     </nav>
   </header>
 
@@ -52,7 +60,8 @@
 
   <footer class="site-footer">
     <div class="site-footer-inner">
-      <a href="{% url 'home' %}" class="brand brand-footer">
+      {% block footer_content %}
+      <a href="{% if request.resolver_match.url_name in "schedule_home,schedule_intake,schedule,schedule_confirmed,manage_lookup,manage_booking" %}{{ schedule_home_url }}{% else %}{{ home_url }}{% endif %}" class="brand brand-footer">
         <img src="{% static 'img/logo-full.png' %}" alt="Integrity Roof Inspection" class="brand-logo brand-logo-footer">
       </a>
 
@@ -62,14 +71,17 @@
         <a href="mailto:integrityroofinspection@gmail.com">integrityroofinspection@gmail.com</a>
         <a href="{% url 'manage_lookup' %}" class="site-footer-manage-link">Manage / Cancel Your Appointment</a>
       </div>
+      {% endblock %}
     </div>
 
     <div class="site-footer-legal">
+      {% block footer_legal %}
       <span>&copy; {% now "Y" %} Integrity Roof Inspection</span>
       <span aria-hidden="true">|</span>
       <a href="{% url 'terms' %}">Terms of Service</a>
       <span aria-hidden="true">|</span>
       <a href="{% url 'privacy' %}">Privacy Policy</a>
+      {% endblock %}
     </div>
   </footer>
 

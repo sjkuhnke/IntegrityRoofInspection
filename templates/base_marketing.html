@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  {% block marketing_extra_head %}{% endblock %}
+{% endblock %}
+
+{% block body_class %}site-marketing {% block marketing_body_class %}{% endblock %}{% endblock %}
+
+{% block nav_links %}
+  <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}is-active{% endif %}">Home</a>
+  <a href="{% url 'about' %}" class="{% if request.resolver_match.url_name == 'about' %}is-active{% endif %}">About Us</a>
+  <a href="{% url 'services' %}" class="{% if request.resolver_match.url_name == 'services' %}is-active{% endif %}">Services</a>
+  <a href="{% url 'contact' %}" class="{% if request.resolver_match.url_name == 'contact' %}is-active{% endif %}">Contact Us</a>
+{% endblock %}
+
+{% block mobile_nav_links %}
+  <a href="{% url 'home' %}">Home</a>
+  <a href="{% url 'about' %}">About Us</a>
+  <a href="{% url 'services' %}">Services</a>
+  <a href="{% url 'contact' %}">Contact Us</a>
+  <a href="{% url 'schedule' %}" class="btn-yellow mkt-mobile-cta">Schedule Free Inspection</a>
+{% endblock %}
+
+{% block nav_cta %}
+  <a href="{% url 'schedule' %}" class="btn-yellow mkt-header-cta">Schedule Free Inspection</a>
+{% endblock %}
+
+{% block footer_content %}
+  <div class="mkt-footer-inner">
+
+    <div class="mkt-footer-col mkt-footer-brand">
+      <a href="{% url 'home' %}" class="brand brand-footer">
+        <img src="{% static 'img/logo-full.png' %}" alt="Integrity Roof Inspection" class="brand-logo brand-logo-footer">
+      </a>
+      <p class="mkt-footer-tagline">Thorough Inspections. Honest Guidance. Real Solutions.</p>
+    </div>
+
+    <div class="mkt-footer-col">
+      <h4>Quick Links</h4>
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'about' %}">About Us</a>
+      <a href="{% url 'services' %}">Services</a>
+      <a href="{% url 'contact' %}">Contact Us</a>
+    </div>
+
+    <div class="mkt-footer-col">
+      <h4>Contact Info</h4>
+      <a href="tel:12629096382">Phone: (262) 909-6382</a>
+      <a href="mailto:info@integrityroofinspection.com">Email: info@integrityroofinspection.com</a>
+      <a href="{% url 'manage_lookup' %}" class="site-footer-manage-link">Manage / Cancel Your Appointment</a>
+    </div>
+
+    <div class="mkt-footer-col">
+      <h4>Business Hours</h4>
+      <p>Mon&ndash;Fri: 9:00&ndash;9:00</p>
+      <p>Sat: 10:00&ndash;5:00</p>
+      <p>Sun: 10:00&ndash;5:00</p>
+    </div>
+
+  </div>
+{% endblock %}
+
+{% block footer_legal %}
+  <span>&copy; {% now "Y" %} Integrity Roof Inspection. All rights reserved.</span>
+  <span class="mkt-footer-legal-links">
+    <a href="{% url 'terms' %}">Terms of Service</a>
+    <span aria-hidden="true">|</span>
+    <a href="{% url 'privacy' %}">Privacy Policy</a>
+  </span>
+{% endblock %}
+
+{% block content %}
+  {% block marketing_content %}{% endblock %}
+{% endblock %}

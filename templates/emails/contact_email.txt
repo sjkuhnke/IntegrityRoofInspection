@@ -1,0 +1,6 @@
+You have received a new message from the contact form on Integrity Roof Inspection's website:
+
+Name: {{ name }}
+Email: {{ email }}
+Message:
+{{ message }}

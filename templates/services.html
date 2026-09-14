@@ -1,0 +1,52 @@
+{% extends "base_marketing.html" %}
+{% load static %}
+
+{% block title %}Our Services | Integrity Roof Inspection{% endblock %}
+{% block meta_description %}Thorough, honest roof inspections and guidance. Understand new roofs, repairs, roofing systems, and maintenance before you commit to a costly investment.{% endblock %}
+{% block marketing_body_class %}site-services{% endblock %}
+
+{% block marketing_content %}
+
+  <!-- HERO -->
+  <section class="services-hero">
+    <div class="services-hero-inner">
+      <span class="about-eyebrow reveal">Our Services</span>
+      <h1 class="reveal">Thorough Inspections.<br>Honest Guidance.<br>Real Solutions.</h1>
+      <p class="services-hero-subhead reveal">With the seasons changing, many homeowners are determining it is time for their routine roof inspection. This time, get an INDEPENDENT inspection.</p>
+    </div>
+
+    <div class="services-hero-image reveal">
+      <img src="{% static 'img/signs-rooftop-view.jpg' %}" alt="View along a roof ridge overlooking a wooded property">
+    </div>
+  </section>
+
+  <!-- OUR SERVICES -->
+  <section class="home-solutions">
+    <h2 class="reveal">Our Services</h2>
+    <p class="home-solutions-sub reveal">If your roof has leaks, storm damage, missing shingles, or is simply aging, we can help you understand your options before committing to a costly investment.</p>
+
+    {% include "partials/solution_cards.html" %}
+
+    <a href="{% url 'schedule' %}" class="btn-yellow reveal">Schedule Inspection</a>
+  </section>
+
+  <!-- EXTEND THE LIFE OF YOUR ROOF -->
+  <section class="services-extend">
+    <div class="services-extend-bg" style="background-image:url('{% static "img/services-shingle-texture.jpg" %}');"></div>
+    <div class="services-extend-overlay"></div>
+
+    <div class="services-extend-content">
+      <div class="services-extend-left reveal">
+        <h2>Looking to extend<br>the life of your roof?</h2>
+      </div>
+
+      <div class="services-extend-right reveal">
+        <p>Not every roof needs to be replaced. In many cases, a well-maintained roof still has years of useful life left with the right care and targeted repairs.</p>
+        <p>For certain homeowners, extending the life of the existing roof is a more appropriate and practical solution instead of being pushed toward an expensive full replacement. We thoroughly evaluate your roof's condition and recommend cost-effective maintenance, repairs, or rejuvenation options when they are appropriate.</p>
+        <p>Our goal is simple: provide unbiased guidance that protects your home, your budget, and your peace of mind.</p>
+        <a href="{% url 'schedule' %}" class="btn-yellow">Schedule Inspection</a>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

@@ -1,7 +1,12 @@
 import calendar as calendar_module
 import logging
+import requests
 from datetime import date as date_cls
 
+from django.conf import settings
+from django.contrib import messages
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 from django.db import IntegrityError, transaction
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -17,8 +22,71 @@ logger = logging.getLogger(__name__)
 INSPECTION_REQUEST_SESSION_KEY = "inspection_request_id"
 
 
+def schedule_home(request):
+    return render(request, "schedule_home.html")
+
+
 def home(request):
     return render(request, "home.html")
+
+
+def about(request):
+    return render(request, "about.html")
+
+
+def services(request):
+    return render(request, "services.html")
+
+
+def contact(request):
+    #recaptcha_site_key = settings.GOOGLE_RECAPTCHA_SITE_KEY
+    #recaptcha_secret_key = settings.GOOGLE_RECAPTCHA_SECRET_KEY
+
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        message_text = request.POST.get('message')
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+
+        if not first_name or not email or not message_text or not recaptcha_response:
+            messages.error(request, 'Please fill out all required fields.')
+            return redirect('contact')
+
+        recaptcha_result = requests.post(
+            'https://www.google.com/recaptcha/api/siteverify',
+            data={'secret': 0, 'response': recaptcha_response},
+        )
+        recaptcha_score = recaptcha_result.json().get('score', 0)
+
+        if not recaptcha_result.json().get('success') or recaptcha_score < 0.5:
+            messages.error(request, 'reCAPTCHA verification failed. Please try again.')
+            return redirect('contact')
+
+        email_body = render_to_string('emails/contact_email.txt', {
+            'name': f'{first_name} {last_name}'.strip(),
+            'email': email,
+            'message': message_text,
+        })
+
+        email_message = EmailMessage(
+            'New Contact Submission - Integrity Roof Inspection',
+            email_body,
+            settings.DEFAULT_FROM_EMAIL,
+            ['shaejk29@gmail.com']
+        )
+
+        try:
+            email_message.send()
+            messages.success(request, "Thanks for reaching out! We'll get back to you shortly.")
+        except Exception as e:
+            messages.error(request, f'An error occurred: {str(e)}')
+
+        return redirect('contact')
+
+    return render(request, 'contact.html', {
+        'recaptcha_site_key': 0,
+    })
 
 
 def terms(request):
