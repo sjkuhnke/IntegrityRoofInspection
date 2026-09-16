@@ -13,7 +13,7 @@
 
 {% block content %}
 
-<section class="schedule-page">
+<section class="schedule-page reveal">
 
   <div class="intake-card">
 
@@ -105,12 +105,15 @@
     </form>
 
   </div>
-  <hr class="rule">
+    {% if not request.session.hide_relamination %}
+    <hr class="rule">
     {% include "partials/star_rating.html" %}
+    {% endif %}
   <hr class="rule">
 </section>
     
 <!-- SIGNS YOUR ROOF NEEDS CARE -->
+{% if not request.session.hide_relamination %}
 <section class="schedule-signs reveal">
   <div class="schedule-signs-image">
     <img src="{% static 'img/roofer-cropped.jpg' %}" alt="View along a roof ridge overlooking a property, technician's gloved hand in foreground">
@@ -119,6 +122,7 @@
     <p>Our Roof Relamination, Maintenance, and Tune-Up service is designed to restore and protect qualifying roofs, helping homeowners avoid the cost of a full replacement. If your roof qualifies, this service can extend its usable lifespan by 15+ years while saving you thousands of dollars. Through targeted maintenance, reinforcement, and protective treatments, we help maximize the life of your existing roof and keep it performing at its best for years to come.</p>
   </div>
 </section>
+{% endif %}
     
 <section class="testimonials reveal">
   {% include "partials/testimonials.html" %}

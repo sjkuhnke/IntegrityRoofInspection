@@ -765,7 +765,7 @@ body.site-marketing .site-footer-legal {
 .services-hero-image img {
   width: 100%;
   display: block;
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  border-radius: var(--radius-md) var(--radius-md);
 }
 
 .home-solutions-sub {

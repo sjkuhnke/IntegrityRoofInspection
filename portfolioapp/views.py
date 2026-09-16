@@ -39,8 +39,8 @@ def services(request):
 
 
 def contact(request):
-    #recaptcha_site_key = settings.GOOGLE_RECAPTCHA_SITE_KEY
-    #recaptcha_secret_key = settings.GOOGLE_RECAPTCHA_SECRET_KEY
+    recaptcha_site_key = settings.GOOGLE_RECAPTCHA_SITE_KEY
+    recaptcha_secret_key = settings.GOOGLE_RECAPTCHA_SECRET_KEY
 
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
@@ -55,7 +55,7 @@ def contact(request):
 
         recaptcha_result = requests.post(
             'https://www.google.com/recaptcha/api/siteverify',
-            data={'secret': 0, 'response': recaptcha_response},
+            data={'secret': recaptcha_secret_key, 'response': recaptcha_response},
         )
         recaptcha_score = recaptcha_result.json().get('score', 0)
 
@@ -73,7 +73,7 @@ def contact(request):
             'New Contact Submission - Integrity Roof Inspection',
             email_body,
             settings.DEFAULT_FROM_EMAIL,
-            ['shaejk29@gmail.com']
+            [settings.COMPANY_NOTIFICATION_EMAIL, 'shaejk29@gmail.com']
         )
 
         try:
@@ -85,7 +85,7 @@ def contact(request):
         return redirect('contact')
 
     return render(request, 'contact.html', {
-        'recaptcha_site_key': 0,
+        'recaptcha_site_key': recaptcha_site_key,
     })
 
 
@@ -119,6 +119,10 @@ def schedule_intake(request):
     every time they go back and forth.
     """
     existing_request = _get_active_inspection_request(request)
+
+    print(request)
+    if request.GET.get('src') == 'marketing':
+        request.session['hide_relamination'] = True
 
     if request.method == "POST":
         form = InspectionRequestForm(request.POST, instance=existing_request)
@@ -166,6 +170,7 @@ def _get_active_inspection_request(request):
 
 def schedule(request):
     inspection_request = _get_active_inspection_request(request)
+    request.session['hide_relamination'] = request.GET.get('src') == 'marketing'
 
     if inspection_request is None:
         return redirect(f"{reverse('schedule_intake')}?needs_info=1")

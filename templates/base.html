@@ -28,17 +28,17 @@
         <span></span><span></span><span></span>
       </button>
 
-      <a href="{% if request.resolver_match.url_name in "schedule_home,schedule_intake,schedule,schedule_confirmed,manage_lookup,manage_booking" %}{{ schedule_home_url }}{% else %}{{ home_url }}{% endif %}" class="brand">
+      <a href="{% if in_schedule_flow %}{{ schedule_home_url }}{% else %}{{ home_url }}{% endif %}" class="brand">
         <img src="{% static 'img/logo-full.png' %}" alt="Integrity Roof Inspection" class="brand-logo">
       </a>
 
       <nav class="main-nav" aria-label="Primary">
         {% block nav_links %}
-        <a href="{% url 'home' %}#schedule">SCHEDULE INSPECTION</a>
+        <a href="{% url 'schedule_home' %}#schedule">SCHEDULE INSPECTION</a>
         <span aria-hidden="true">|</span>
-        <a href="{% url 'home' %}#information">INFORMATION</a>
+        <a href="{% url 'schedule_home' %}#information">INFORMATION</a>
         <span aria-hidden="true">|</span>
-        <a href="{% url 'home' %}#about">ABOUT US</a>
+        <a href="{% url 'schedule_home' %}#about">ABOUT US</a>
         {% endblock %}
       </nav>
 
@@ -61,7 +61,7 @@
   <footer class="site-footer">
     <div class="site-footer-inner">
       {% block footer_content %}
-      <a href="{% if request.resolver_match.url_name in "schedule_home,schedule_intake,schedule,schedule_confirmed,manage_lookup,manage_booking" %}{{ schedule_home_url }}{% else %}{{ home_url }}{% endif %}" class="brand brand-footer">
+      <a href="{% if in_schedule_flow %}{{ schedule_home_url }}{% else %}{{ home_url }}{% endif %}" class="brand brand-footer">
         <img src="{% static 'img/logo-full.png' %}" alt="Integrity Roof Inspection" class="brand-logo brand-logo-footer">
       </a>
 

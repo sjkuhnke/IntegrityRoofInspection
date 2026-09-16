@@ -21,11 +21,11 @@
   <a href="{% url 'about' %}">About Us</a>
   <a href="{% url 'services' %}">Services</a>
   <a href="{% url 'contact' %}">Contact Us</a>
-  <a href="{% url 'schedule' %}" class="btn-yellow mkt-mobile-cta">Schedule Free Inspection</a>
+  <a href="{{ schedule_marketing_url }}" class="btn-yellow mkt-mobile-cta">Schedule Free Inspection</a>
 {% endblock %}
 
 {% block nav_cta %}
-  <a href="{% url 'schedule' %}" class="btn-yellow mkt-header-cta">Schedule Free Inspection</a>
+  <a href="{{ schedule_marketing_url }}" class="btn-yellow mkt-header-cta">Schedule Free Inspection</a>
 {% endblock %}
 
 {% block footer_content %}
@@ -49,7 +49,7 @@
     <div class="mkt-footer-col">
       <h4>Contact Info</h4>
       <a href="tel:12629096382">Phone: (262) 909-6382</a>
-      <a href="mailto:info@integrityroofinspection.com">Email: info@integrityroofinspection.com</a>
+      <a href="mailto:integrityroofinspection@gmail.com">Email: integrityroofinspection@gmail.com</a>
       <a href="{% url 'manage_lookup' %}" class="site-footer-manage-link">Manage / Cancel Your Appointment</a>
     </div>
 
